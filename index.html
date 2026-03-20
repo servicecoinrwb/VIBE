@@ -9,265 +9,193 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#0d0f14;
-  --bg2:#13161e;
-  --bg3:#1a1e29;
-  --bg4:#222638;
-  --border:#2a2f45;
-  --border2:#363d5a;
-  --text:#e8ecf4;
-  --text2:#8b92aa;
-  --text3:#555d75;
-  --green:#00e49a;
-  --green2:#00b87a;
-  --green-bg:rgba(0,228,154,0.08);
-  --green-border:rgba(0,228,154,0.2);
-  --amber:#f5a623;
-  --amber-bg:rgba(245,166,35,0.08);
-  --amber-border:rgba(245,166,35,0.2);
-  --red:#ff5c5c;
-  --red-bg:rgba(255,92,92,0.08);
-  --red-border:rgba(255,92,92,0.2);
+  --bg:#0d0f14;--bg2:#13161e;--bg3:#1a1e29;--bg4:#222638;
+  --border:#2a2f45;--border2:#363d5a;
+  --text:#e8ecf4;--text2:#8b92aa;--text3:#555d75;
+  --green:#00e49a;--green-bg:rgba(0,228,154,0.08);--green-border:rgba(0,228,154,0.2);
+  --amber:#f5a623;--amber-bg:rgba(245,166,35,0.08);--amber-border:rgba(245,166,35,0.2);
+  --red:#ff5c5c;--red-bg:rgba(255,92,92,0.08);--red-border:rgba(255,92,92,0.2);
+  --orange:#ff8c42;--orange-bg:rgba(255,140,66,0.08);--orange-border:rgba(255,140,66,0.25);
   --blue:#4f8ef7;
-  --mono:'JetBrains Mono',monospace;
-  --sans:'Syne',sans-serif;
-  --radius:8px;
-  --radius-lg:12px;
+  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
+  --radius:8px;--radius-lg:12px;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);}
-
-/* NAV */
-.nav{
-  position:sticky;top:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 32px;height:56px;
-  background:rgba(13,15,20,0.92);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-}
-.nav-logo{font-family:var(--mono);font-size:16px;font-weight:600;letter-spacing:-0.5px;}
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:56px;background:rgba(13,15,20,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:var(--mono);font-size:16px;font-weight:600;letter-spacing:-.5px;}
 .nav-logo span{color:var(--green);}
-.nav-right{display:flex;align-items:center;gap:24px;}
+.nav-right{display:flex;align-items:center;gap:20px;}
+.nav-divider{width:1px;height:28px;background:var(--border);}
 .nav-stat{display:flex;flex-direction:column;align-items:flex-end;}
 .nav-stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;}
 .nav-stat-val{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--green);}
-.nav-divider{width:1px;height:28px;background:var(--border);}
+.streak-nav-pill{display:flex;align-items:center;gap:7px;padding:5px 13px;border-radius:99px;border:1px solid var(--orange-border);background:var(--orange-bg);cursor:pointer;transition:border-color .15s;}
+.streak-nav-pill:hover{border-color:var(--orange);}
+.streak-nav-num{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--orange);}
+.streak-nav-sub{display:flex;flex-direction:column;}
+.streak-nav-label{font-size:10px;color:var(--text3);}
+.streak-nav-multi{font-size:10px;font-family:var(--mono);color:var(--amber);font-weight:600;}
 .balance-pill{display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:99px;}
 .balance-pill .amount{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--green);}
 .balance-pill .ticker{font-size:11px;color:var(--text2);}
-
-/* LAYOUT */
-.layout{display:grid;grid-template-columns:280px 1fr;height:calc(100vh - 56px);overflow:hidden;}
-
-/* SIDEBAR */
-.sidebar{
-  border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
-  background:var(--bg2);
-  overflow:hidden;
-}
-.sidebar-head{
-  padding:16px 20px 12px;
-  border-bottom:1px solid var(--border);
-  flex-shrink:0;
-}
-.sidebar-head h2{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:10px;}
+.layout{display:grid;grid-template-columns:270px 1fr;height:calc(100vh - 56px);overflow:hidden;}
+.sidebar{border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--bg2);overflow:hidden;}
+.sidebar-head{padding:14px 18px 11px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.sidebar-head h2{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:9px;}
 .filter-row{display:flex;gap:4px;}
-.filter-btn{
-  padding:4px 12px;font-size:11px;font-family:var(--sans);font-weight:500;
-  border:1px solid var(--border);border-radius:99px;
-  background:none;color:var(--text2);cursor:pointer;transition:all .15s;
-}
+.filter-btn{padding:3px 10px;font-size:11px;font-family:var(--sans);font-weight:500;border:1px solid var(--border);border-radius:99px;background:none;color:var(--text2);cursor:pointer;transition:all .15s;}
 .filter-btn:hover{border-color:var(--border2);color:var(--text);}
 .filter-btn.active{background:var(--green);border-color:var(--green);color:#0d0f14;}
-.ch-list{flex:1;overflow-y:auto;padding:8px;}
-.ch-list::-webkit-scrollbar{width:4px;}
-.ch-list::-webkit-scrollbar-track{background:transparent;}
+.ch-list{flex:1;overflow-y:auto;padding:7px;}
+.ch-list::-webkit-scrollbar{width:3px;}
 .ch-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
-.ch-item{
-  padding:11px 13px;border-radius:var(--radius);
-  cursor:pointer;transition:background .12s;
-  border:1px solid transparent;
-  margin-bottom:3px;
-}
+.ch-item{padding:10px 12px;border-radius:var(--radius);cursor:pointer;transition:background .12s;border:1px solid transparent;margin-bottom:3px;}
 .ch-item:hover{background:var(--bg3);}
 .ch-item.active{background:var(--bg3);border-color:var(--green-border);}
-.ch-item.done{opacity:.7;}
+.ch-item.done{opacity:.65;}
 .ch-row1{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
-.ch-name{font-size:13px;font-weight:500;color:var(--text);}
-.done-check{color:var(--green);font-size:11px;margin-left:5px;}
-.diff-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;font-family:var(--mono);}
+.ch-name{font-size:12px;font-weight:500;color:var(--text);}
+.done-check{color:var(--green);font-size:10px;margin-left:4px;}
+.diff-badge{font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;font-family:var(--mono);}
 .diff-easy{background:rgba(0,228,154,0.1);color:var(--green);}
 .diff-med{background:var(--amber-bg);color:var(--amber);}
 .diff-hard{background:var(--red-bg);color:var(--red);}
 .ch-row2{display:flex;justify-content:space-between;align-items:center;}
 .ch-reward{font-family:var(--mono);font-size:11px;color:var(--green);font-weight:500;}
 .ch-best{font-family:var(--mono);font-size:10px;color:var(--text3);}
-
-/* MAIN PANEL */
 .main{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
-.main-tabs{
-  display:flex;align-items:center;gap:0;
-  border-bottom:1px solid var(--border);
-  background:var(--bg2);
-  padding:0 24px;
-  flex-shrink:0;
-}
-.main-tab{
-  padding:14px 18px;font-size:13px;font-weight:500;
-  color:var(--text2);background:none;border:none;cursor:pointer;
-  border-bottom:2px solid transparent;margin-bottom:-1px;
-  transition:color .15s;font-family:var(--sans);
-}
+.main-tabs{display:flex;align-items:center;border-bottom:1px solid var(--border);background:var(--bg2);padding:0 22px;flex-shrink:0;}
+.main-tab{padding:14px 16px;font-size:13px;font-weight:500;color:var(--text2);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s;font-family:var(--sans);}
 .main-tab:hover{color:var(--text);}
 .main-tab.active{color:var(--green);border-bottom-color:var(--green);}
-.main-body{flex:1;overflow-y:auto;padding:24px;}
+.main-tab.streak-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
+.main-body{flex:1;overflow-y:auto;padding:22px;}
 .main-body::-webkit-scrollbar{width:4px;}
 .main-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
-
-/* EMPTY STATE */
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:var(--text3);}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:300px;gap:12px;color:var(--text3);}
 .empty-icon{font-size:40px;opacity:.4;}
 .empty p{font-size:14px;}
-
-/* CHALLENGE INFO */
-.ch-info-card{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;
-}
-.ch-info-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
-.ch-info-title{font-size:18px;font-weight:700;color:var(--text);}
-.timer-display{
-  font-family:var(--mono);font-size:14px;font-weight:600;
-  padding:6px 14px;border-radius:99px;
-  border:1px solid var(--border2);color:var(--text2);
-  transition:all .3s;white-space:nowrap;
-}
+.ch-info-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:14px;}
+.ch-info-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.ch-info-title{font-size:17px;font-weight:700;color:var(--text);}
+.timer-display{font-family:var(--mono);font-size:13px;font-weight:600;padding:5px 12px;border-radius:99px;border:1px solid var(--border2);color:var(--text2);transition:all .3s;white-space:nowrap;}
 .timer-display.running{color:var(--green);border-color:var(--green-border);background:var(--green-bg);}
 .timer-display.warn{color:var(--amber);border-color:var(--amber-border);background:var(--amber-bg);}
 .timer-display.danger{color:var(--red);border-color:var(--red-border);background:var(--red-bg);}
-.ch-info-desc{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:14px;}
+.ch-info-desc{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;}
 .ch-info-desc code{font-family:var(--mono);font-size:12px;background:var(--bg4);padding:1px 5px;border-radius:4px;color:var(--green);}
-.ch-meta-pills{display:flex;gap:8px;flex-wrap:wrap;}
-.meta-pill{font-size:11px;padding:4px 10px;border-radius:6px;background:var(--bg4);color:var(--text2);border:1px solid var(--border);}
+.ch-meta-pills{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+.meta-pill{font-size:11px;padding:3px 9px;border-radius:6px;background:var(--bg4);color:var(--text2);border:1px solid var(--border);}
 .meta-pill b{color:var(--text);}
-
-/* HINTS */
-.hints-card{
-  background:var(--bg2);border:1px solid var(--amber-border);
-  border-radius:var(--radius-lg);margin-bottom:16px;overflow:hidden;
-}
-.hints-header{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:12px 16px;cursor:pointer;user-select:none;
-}
+.multiplier-pill{font-size:11px;padding:3px 10px;border-radius:6px;background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border);font-family:var(--mono);font-weight:600;}
+.hints-card{background:var(--bg2);border:1px solid var(--amber-border);border-radius:var(--radius-lg);margin-bottom:14px;overflow:hidden;}
+.hints-header{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;cursor:pointer;user-select:none;}
 .hints-header:hover{background:var(--bg3);}
 .hints-header-left{display:flex;align-items:center;gap:8px;}
-.hints-icon{font-size:14px;}
 .hints-title{font-size:13px;font-weight:600;color:var(--amber);}
 .hints-count{font-size:11px;color:var(--text3);font-family:var(--mono);}
-.hints-cost-note{font-size:11px;color:var(--text3);}
-.hints-chevron{font-size:12px;color:var(--text3);transition:transform .2s;}
-.hints-chevron.open{transform:rotate(180deg);}
 .hints-body{border-top:1px solid var(--border);display:none;}
 .hints-body.open{display:block;}
-.hint-row{
-  display:flex;align-items:center;gap:12px;
-  padding:11px 16px;border-bottom:1px solid var(--border);
-}
+.hint-row{display:flex;align-items:center;gap:11px;padding:10px 15px;border-bottom:1px solid var(--border);}
 .hint-row:last-child{border-bottom:none;}
-.hint-num{
-  font-family:var(--mono);font-size:10px;font-weight:600;
-  width:20px;height:20px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);
-  flex-shrink:0;
-}
+.hint-num{font-family:var(--mono);font-size:10px;font-weight:600;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);flex-shrink:0;}
 .hint-text{font-size:13px;color:var(--text2);line-height:1.5;flex:1;}
 .hint-locked{display:flex;align-items:center;gap:8px;flex:1;}
 .hint-locked-text{font-size:12px;color:var(--text3);}
-.unlock-btn{
-  font-size:11px;font-weight:600;padding:4px 12px;
-  background:var(--amber-bg);border:1px solid var(--amber-border);
-  color:var(--amber);border-radius:6px;cursor:pointer;
-  font-family:var(--sans);transition:all .15s;
-}
+.unlock-btn{font-size:11px;font-weight:600;padding:3px 10px;background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber);border-radius:6px;cursor:pointer;font-family:var(--sans);transition:all .15s;}
 .unlock-btn:hover{background:rgba(245,166,35,0.18);}
-
-/* EDITOR */
-.editor-section{margin-bottom:16px;}
-.editor-label{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:8px;padding-left:2px;}
-.code-editor{
-  width:100%;min-height:180px;padding:14px 16px;
-  font-family:var(--mono);font-size:13px;line-height:1.7;
-  background:var(--bg2);color:var(--text);
-  border:1px solid var(--border);border-radius:var(--radius-lg);
-  resize:vertical;outline:none;tab-size:2;
-  transition:border-color .15s;
-}
+.editor-section{margin-bottom:14px;}
+.editor-label{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:7px;padding-left:2px;}
+.code-editor{width:100%;min-height:175px;padding:13px 15px;font-family:var(--mono);font-size:13px;line-height:1.7;background:var(--bg2);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-lg);resize:vertical;outline:none;tab-size:2;transition:border-color .15s;}
 .code-editor:focus{border-color:var(--green-border);}
-.btn-row{display:flex;gap:10px;align-items:center;}
-.run-btn{
-  padding:10px 24px;background:var(--green);color:#0d0f14;
-  border:none;border-radius:var(--radius);font-size:13px;font-weight:700;
-  cursor:pointer;font-family:var(--sans);transition:opacity .15s;
-}
+.btn-row{display:flex;gap:9px;align-items:center;margin-bottom:14px;}
+.run-btn{padding:9px 22px;background:var(--green);color:#0d0f14;border:none;border-radius:var(--radius);font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans);transition:opacity .15s;}
 .run-btn:hover{opacity:.85;}
-.reset-btn{
-  padding:10px 16px;background:none;color:var(--text2);
-  border:1px solid var(--border);border-radius:var(--radius);
-  font-size:13px;cursor:pointer;font-family:var(--sans);transition:all .15s;
-}
+.reset-btn{padding:9px 15px;background:none;color:var(--text2);border:1px solid var(--border);border-radius:var(--radius);font-size:13px;cursor:pointer;font-family:var(--sans);transition:all .15s;}
 .reset-btn:hover{border-color:var(--border2);color:var(--text);}
-
-/* RESULTS */
-.results-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
-.results-head{padding:11px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text2);}
-.test-row{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid var(--border);}
+.results-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:12px;}
+.results-head{padding:10px 15px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text2);}
+.test-row{display:flex;align-items:center;gap:9px;padding:8px 15px;border-bottom:1px solid var(--border);}
 .test-row:last-child{border-bottom:none;}
-.test-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.test-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .dot-pass{background:var(--green);}
 .dot-fail{background:var(--red);}
-.test-expr{font-family:var(--mono);font-size:12px;color:var(--text2);flex:1;}
+.test-expr{font-family:var(--mono);font-size:11px;color:var(--text2);flex:1;}
 .test-result{font-size:11px;color:var(--text3);}
 .test-result.pass{color:var(--green);}
 .test-result.fail{color:var(--red);}
-
-/* REWARD */
-.reward-card{
-  background:var(--green-bg);border:1px solid var(--green-border);
-  border-radius:var(--radius-lg);padding:16px 20px;
-  display:flex;align-items:center;gap:14px;
-}
-.reward-icon{font-size:28px;}
-.reward-title{font-size:14px;font-weight:700;color:var(--green);margin-bottom:3px;}
+.reward-card{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:14px 18px;margin-bottom:12px;}
+.reward-main{font-size:14px;font-weight:700;color:var(--green);margin-bottom:6px;}
+.reward-breakdown{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.reward-item{font-size:11px;padding:3px 9px;border-radius:5px;background:rgba(0,228,154,0.12);color:var(--green);font-family:var(--mono);}
+.reward-item.bonus{background:var(--orange-bg);color:var(--orange);}
 .reward-sub{font-size:12px;color:var(--text2);}
-
-/* LEADERBOARD */
+.streak-hero{background:var(--bg2);border:1px solid var(--orange-border);border-radius:var(--radius-lg);padding:28px 22px;margin-bottom:16px;text-align:center;}
+.streak-big-num{font-family:var(--mono);font-size:64px;font-weight:700;color:var(--orange);line-height:1;}
+.streak-big-label{font-size:13px;color:var(--text2);margin-top:8px;margin-bottom:16px;}
+.streak-multi-badge{display:inline-block;font-family:var(--mono);font-size:14px;font-weight:700;padding:6px 18px;border-radius:99px;background:var(--orange-bg);border:1px solid var(--orange-border);color:var(--orange);}
+.streak-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:14px;}
+.streak-section-title{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:14px;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
+.cal-day{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.cal-dot{width:100%;aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;border:1px solid var(--border);background:var(--bg3);}
+.cal-dot.solved{background:var(--orange-bg);border-color:var(--orange-border);}
+.cal-dot.today-solved{background:var(--orange-bg);border-color:var(--orange);}
+.cal-dot.missed{opacity:.25;}
+.cal-label{font-size:10px;color:var(--text3);font-family:var(--mono);}
+.cal-label.today{color:var(--text2);font-weight:600;}
+.milestone-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.milestone{padding:14px 10px;border-radius:var(--radius);border:1px solid var(--border);text-align:center;background:var(--bg3);}
+.milestone.unlocked{border-color:var(--orange-border);background:var(--orange-bg);}
+.milestone-icon{font-size:22px;margin-bottom:6px;opacity:.35;}
+.milestone.unlocked .milestone-icon{opacity:1;}
+.milestone-days{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--text3);}
+.milestone.unlocked .milestone-days{color:var(--orange);}
+.milestone-label{font-size:10px;color:var(--text3);margin-top:3px;}
+.milestone.unlocked .milestone-label{color:var(--text2);}
+.multi-table{width:100%;border-collapse:collapse;}
+.multi-table tr{border-bottom:1px solid var(--border);}
+.multi-table tr:last-child{border-bottom:none;}
+.multi-table td{padding:9px 4px;font-size:12px;color:var(--text2);}
+.multi-table td:last-child{text-align:right;font-family:var(--mono);font-weight:600;color:var(--text);}
+.multi-table tr.active-tier td{color:var(--orange);}
+.freeze-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;margin-bottom:14px;}
+.freeze-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.freeze-title{font-size:13px;font-weight:600;color:var(--text);}
+.freeze-count{font-family:var(--mono);font-size:13px;color:var(--blue);}
+.freeze-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px;}
+.freeze-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.freeze-btn{padding:8px 18px;background:rgba(79,142,247,0.08);border:1px solid rgba(79,142,247,0.25);color:var(--blue);border-radius:var(--radius);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all .15s;}
+.freeze-btn:hover{background:rgba(79,142,247,0.15);}
+.freeze-btn:disabled{opacity:.35;cursor:not-allowed;}
+.freeze-slots{display:flex;gap:5px;}
+.freeze-slot{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;background:var(--bg3);}
+.freeze-slot.full{border-color:rgba(79,142,247,0.3);background:rgba(79,142,247,0.08);}
+.at-risk-banner{background:var(--red-bg);border:1px solid var(--red-border);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;}
+.at-risk-title{font-size:13px;font-weight:600;color:var(--red);margin-bottom:2px;}
+.at-risk-sub{font-size:11px;color:var(--text2);}
+.demo-bar{background:var(--bg3);border:1px dashed var(--border2);border-radius:var(--radius);padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.demo-label{font-size:11px;color:var(--text3);}
+.demo-btn{padding:4px 11px;font-size:11px;background:var(--bg4);border:1px solid var(--border2);color:var(--text2);border-radius:6px;cursor:pointer;font-family:var(--sans);}
+.demo-btn:hover{color:var(--text);border-color:var(--text3);}
 .lb-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
-.lb-head{padding:14px 20px;border-bottom:1px solid var(--border);}
+.lb-head{padding:14px 18px;border-bottom:1px solid var(--border);}
 .lb-head h2{font-size:13px;font-weight:700;color:var(--text);}
 .lb-head p{font-size:12px;color:var(--text3);margin-top:2px;}
-.lb-row{display:flex;align-items:center;gap:12px;padding:11px 20px;border-bottom:1px solid var(--border);transition:background .12s;}
+.lb-row{display:flex;align-items:center;gap:11px;padding:10px 18px;border-bottom:1px solid var(--border);transition:background .12s;}
 .lb-row:last-child{border-bottom:none;}
 .lb-row:hover{background:var(--bg3);}
 .lb-row.you-row{background:var(--green-bg);}
-.lb-rank{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--text3);width:24px;text-align:center;}
-.lb-avatar{
-  width:32px;height:32px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;flex-shrink:0;
-}
+.lb-rank{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text3);width:22px;text-align:center;}
+.lb-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
 .lb-info{flex:1;}
 .lb-name{font-size:13px;font-weight:500;color:var(--text);}
 .lb-name.you{color:var(--green);}
 .lb-solved-text{font-size:11px;color:var(--text3);margin-top:1px;}
-.lb-score{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--green);}
-
-/* PLACEHOLDER */
-.placeholder-txt{font-size:13px;color:var(--text3);padding:8px 0;}
-
-/* SCROLLBAR GLOBAL */
+.lb-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+.lb-score{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--green);}
+.lb-streak{font-size:10px;color:var(--text3);}
+.lb-streak.hot{color:var(--orange);}
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
@@ -275,31 +203,27 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--s
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <div class="nav-logo">vibe<span>crypto</span>.dev</div>
   <div class="nav-right">
-    <div class="nav-stat">
-      <span class="nav-stat-label">Solved</span>
-      <span class="nav-stat-val" id="nav-solved">0 / 10</span>
+    <div class="streak-nav-pill" onclick="openStreakTab()" title="View your streak">
+      <span style="font-size:18px;">🔥</span>
+      <span class="streak-nav-num" id="nav-streak">0</span>
+      <div class="streak-nav-sub">
+        <span class="streak-nav-label">day streak</span>
+        <span class="streak-nav-multi" id="nav-multi">1× rewards</span>
+      </div>
     </div>
     <div class="nav-divider"></div>
-    <div class="nav-stat">
-      <span class="nav-stat-label">Rank</span>
-      <span class="nav-stat-val" id="nav-rank">#7</span>
-    </div>
+    <div class="nav-stat"><span class="nav-stat-label">Solved</span><span class="nav-stat-val" id="nav-solved">0 / 10</span></div>
     <div class="nav-divider"></div>
-    <div class="balance-pill">
-      <span class="amount" id="nav-bal">0</span>
-      <span class="ticker">VIB</span>
-    </div>
+    <div class="nav-stat"><span class="nav-stat-label">Rank</span><span class="nav-stat-val" id="nav-rank">#7</span></div>
+    <div class="nav-divider"></div>
+    <div class="balance-pill"><span class="amount" id="nav-bal">0</span><span class="ticker">VIB</span></div>
   </div>
 </nav>
 
-<!-- LAYOUT -->
 <div class="layout">
-
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-head">
       <h2>Challenges</h2>
@@ -313,23 +237,21 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--s
     <div class="ch-list" id="ch-list"></div>
   </aside>
 
-  <!-- MAIN -->
   <div class="main">
     <div class="main-tabs">
-      <button class="main-tab active" onclick="switchTab('editor',this)">Editor</button>
-      <button class="main-tab" onclick="switchTab('leaderboard',this)">Leaderboard</button>
+      <button class="main-tab active" id="tab-btn-editor" onclick="switchTab('editor',this)">Editor</button>
+      <button class="main-tab streak-tab" id="tab-btn-streak" onclick="switchTab('streak',this)">🔥 Streak</button>
+      <button class="main-tab" id="tab-btn-leaderboard" onclick="switchTab('leaderboard',this)">Leaderboard</button>
     </div>
-
     <div class="main-body">
 
-      <!-- EDITOR TAB -->
+      <!-- EDITOR -->
       <div id="tab-editor">
         <div id="ch-placeholder" class="empty">
           <div class="empty-icon">⚡</div>
           <p>Select a challenge from the sidebar to start coding</p>
         </div>
         <div id="ch-content" style="display:none;">
-          <!-- challenge info -->
           <div class="ch-info-card">
             <div class="ch-info-top">
               <span class="ch-info-title" id="ci-title"></span>
@@ -338,41 +260,87 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--s
             <p class="ch-info-desc" id="ci-desc"></p>
             <div class="ch-meta-pills" id="ci-meta"></div>
           </div>
-          <!-- hints -->
           <div class="hints-card">
             <div class="hints-header" onclick="toggleHints()">
               <div class="hints-header-left">
-                <span class="hints-icon">💡</span>
+                <span style="font-size:14px;">💡</span>
                 <span class="hints-title">Hints</span>
                 <span class="hints-count" id="hints-count">(0/3 unlocked)</span>
               </div>
               <div style="display:flex;align-items:center;gap:10px;">
-                <span class="hints-cost-note">10 VIB each</span>
-                <span class="hints-chevron" id="hints-chevron">▼</span>
+                <span style="font-size:11px;color:var(--text3);">10 VIB each</span>
+                <span id="hints-chevron" style="font-size:12px;color:var(--text3);">▼</span>
               </div>
             </div>
             <div class="hints-body" id="hints-body"></div>
           </div>
-          <!-- editor -->
           <div class="editor-section">
             <div class="editor-label">// your solution</div>
             <textarea class="code-editor" id="code-input" spellcheck="false" onkeydown="handleTab(event)"></textarea>
           </div>
-          <div class="btn-row" style="margin-bottom:16px;">
-            <button class="run-btn" onclick="runCode()">▶ Run & Submit</button>
+          <div class="btn-row">
+            <button class="run-btn" onclick="runCode()">▶ Run &amp; Submit</button>
             <button class="reset-btn" onclick="resetCode()">↺ Reset</button>
           </div>
           <div id="results-area"></div>
         </div>
       </div>
 
-      <!-- LEADERBOARD TAB -->
+      <!-- STREAK TAB -->
+      <div id="tab-streak" style="display:none;">
+        <div class="demo-bar">
+          <span class="demo-label">🛠 Demo controls</span>
+          <button class="demo-btn" onclick="simulateNextDay()">Next day +1 ›</button>
+          <button class="demo-btn" onclick="simulateMissDay()">Miss a day ›</button>
+          <button class="demo-btn" onclick="resetStreak()">Reset streak</button>
+          <span style="font-size:11px;color:var(--text3);margin-left:auto;" id="demo-date-label"></span>
+        </div>
+        <div class="at-risk-banner" id="at-risk-banner" style="display:none;">
+          <span style="font-size:22px;">⚠️</span>
+          <div>
+            <div class="at-risk-title">Streak at risk!</div>
+            <div class="at-risk-sub">Solve at least one challenge today to keep your streak alive.</div>
+          </div>
+        </div>
+        <div class="streak-hero">
+          <div class="streak-big-num" id="streak-big">0</div>
+          <div class="streak-big-label">day streak</div>
+          <div class="streak-multi-badge" id="streak-multi-badge">1× reward multiplier</div>
+        </div>
+        <div class="streak-section">
+          <div class="streak-section-title">Last 7 days</div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+        <div class="streak-section">
+          <div class="streak-section-title">Milestones</div>
+          <div class="milestone-grid" id="milestone-grid"></div>
+        </div>
+        <div class="streak-section">
+          <div class="streak-section-title">Reward multipliers</div>
+          <table class="multi-table">
+            <tr id="tier-0"><td>1 – 6 days</td><td>Getting started</td><td>1×</td></tr>
+            <tr id="tier-1"><td>7 – 13 days</td><td>Getting hot 🔥</td><td>1.5×</td></tr>
+            <tr id="tier-2"><td>14 – 29 days</td><td>On fire 🔥🔥</td><td>1.75×</td></tr>
+            <tr id="tier-3"><td>30+ days</td><td>Legendary 🏆</td><td>2×</td></tr>
+          </table>
+        </div>
+        <div class="freeze-card">
+          <div class="freeze-top">
+            <span class="freeze-title">❄️ Streak Freezes</span>
+            <span class="freeze-count" id="freeze-count">0 / 3 owned</span>
+          </div>
+          <p class="freeze-desc">A streak freeze lets you skip one day without breaking your streak. Protects your hard-earned multiplier. Costs 75 VIB each, max 3 held at once. Used automatically when you miss a day.</p>
+          <div class="freeze-row">
+            <button class="freeze-btn" id="freeze-buy-btn" onclick="buyFreeze()">Buy freeze — 75 VIB</button>
+            <div class="freeze-slots" id="freeze-slots"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEADERBOARD -->
       <div id="tab-leaderboard" style="display:none;">
         <div class="lb-card">
-          <div class="lb-head">
-            <h2>Global Leaderboard</h2>
-            <p>Ranked by VIB earned</p>
-          </div>
+          <div class="lb-head"><h2>Global Leaderboard</h2><p>Ranked by VIB earned · 🔥 = active streak</p></div>
           <div id="lb-rows"></div>
         </div>
       </div>
@@ -383,299 +351,276 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--s
 
 <script>
 const challenges=[
-  {id:0,name:"Sum Two Numbers",diff:"easy",reward:50,time:120,
-   desc:"Write a function <code>sum(a, b)</code> that returns the sum of two numbers.",
-   starter:"function sum(a, b) {\n  // your code here\n}",
-   hints:["Think about what the + operator does.","Just use the + operator to combine a and b.","return a + b;"],
-   tests:[{expr:"sum(1,2)",expected:3},{expr:"sum(-5,5)",expected:0},{expr:"sum(10,20)",expected:30},{expr:"sum(0,0)",expected:0}]},
-  {id:1,name:"Reverse a String",diff:"easy",reward:75,time:120,
-   desc:"Write a function <code>reverseStr(s)</code> that returns the string reversed.",
-   starter:"function reverseStr(s) {\n  // your code here\n}",
-   hints:["Strings have a split method.","Try split(''), reverse(), then join('').","return s.split('').reverse().join('');"],
-   tests:[{expr:"reverseStr('hello')",expected:"olleh"},{expr:"reverseStr('abc')",expected:"cba"},{expr:"reverseStr('a')",expected:"a"},{expr:"reverseStr('')",expected:""}]},
-  {id:2,name:"Array Maximum",diff:"easy",reward:75,time:120,
-   desc:"Write a function <code>maxArr(arr)</code> that returns the largest number in the array.",
-   starter:"function maxArr(arr) {\n  // your code here\n}",
-   hints:["Math.max() can take multiple arguments.","You can spread the array: Math.max(...arr).","return Math.max(...arr);"],
-   tests:[{expr:"maxArr([1,3,2])",expected:3},{expr:"maxArr([-1,-5,0])",expected:0},{expr:"maxArr([100])",expected:100}]},
-  {id:3,name:"Count Vowels",diff:"easy",reward:80,time:150,
-   desc:"Write a function <code>countVowels(str)</code> that returns the number of vowels (a,e,i,o,u) in a string. Case-insensitive.",
-   starter:"function countVowels(str) {\n  // your code here\n}",
-   hints:["Convert to lowercase first with .toLowerCase().","Use a regex match: /[aeiou]/gi","return (str.match(/[aeiou]/gi) || []).length;"],
-   tests:[{expr:"countVowels('hello')",expected:2},{expr:"countVowels('AEIou')",expected:5},{expr:"countVowels('xyz')",expected:0},{expr:"countVowels('')",expected:0}]},
-  {id:4,name:"Palindrome Check",diff:"easy",reward:90,time:150,
-   desc:"Write a function <code>isPalindrome(s)</code> that returns <code>true</code> if the string reads the same forwards and backwards.",
-   starter:"function isPalindrome(s) {\n  // your code here\n}",
-   hints:["Reverse the string and compare it to the original.","Use split, reverse, and join to reverse.","return s === s.split('').reverse().join('');"],
-   tests:[{expr:"isPalindrome('racecar')",expected:true},{expr:"isPalindrome('hello')",expected:false},{expr:"isPalindrome('a')",expected:true},{expr:"isPalindrome('')",expected:true}]},
-  {id:5,name:"Is Prime?",diff:"medium",reward:150,time:180,
-   desc:"Write a function <code>isPrime(n)</code> that returns <code>true</code> if n is a prime number, <code>false</code> otherwise.",
-   starter:"function isPrime(n) {\n  // your code here\n}",
-   hints:["Numbers less than 2 are not prime.","Loop from 2 to Math.sqrt(n) and check divisibility with %.","if(n<2) return false; for(let i=2;i<=Math.sqrt(n);i++) if(n%i===0) return false; return true;"],
-   tests:[{expr:"isPrime(2)",expected:true},{expr:"isPrime(7)",expected:true},{expr:"isPrime(4)",expected:false},{expr:"isPrime(1)",expected:false},{expr:"isPrime(13)",expected:true}]},
-  {id:6,name:"FizzBuzz Array",diff:"medium",reward:150,time:180,
-   desc:"Write a function <code>fizzBuzz(n)</code> that returns an array for 1 to n. Multiples of 3 → 'Fizz', 5 → 'Buzz', both → 'FizzBuzz', else the number as a string.",
-   starter:"function fizzBuzz(n) {\n  // your code here\n}",
-   hints:["Use the % (modulo) operator to check divisibility.","Check for FizzBuzz (divisible by both) before checking either alone.","Loop from 1 to n and push to a result array."],
-   tests:[{expr:"fizzBuzz(3)[2]",expected:"Fizz"},{expr:"fizzBuzz(5)[4]",expected:"Buzz"},{expr:"fizzBuzz(15)[14]",expected:"FizzBuzz"},{expr:"fizzBuzz(5)[0]",expected:"1"}]},
-  {id:7,name:"Flatten Array",diff:"medium",reward:175,time:200,
-   desc:"Write a function <code>flatten(arr)</code> that takes a deeply nested array and returns a single flat array with all values.",
-   starter:"function flatten(arr) {\n  // your code here\n}",
-   hints:["JavaScript arrays have a built-in flat() method.","flat() accepts a depth argument.","Use Infinity as the depth to flatten any nesting level."],
-   tests:[{expr:"JSON.stringify(flatten([1,[2,3]]))",expected:"[1,2,3]"},{expr:"JSON.stringify(flatten([[1,[2]],3]))",expected:"[1,2,3]"},{expr:"JSON.stringify(flatten([1,2,3]))",expected:"[1,2,3]"}]},
-  {id:8,name:"Two Sum",diff:"hard",reward:300,time:300,
-   desc:"Write a function <code>twoSum(nums, target)</code> that returns the indices of the two numbers that add up to <code>target</code>. Assume exactly one solution exists.",
-   starter:"function twoSum(nums, target) {\n  // your code here\n}",
-   hints:["A brute force O(n²) nested loop works fine here.","For O(n), use a Map to store numbers you've already seen.","For each number, check if (target - num) already exists in the map."],
-   tests:[{expr:"JSON.stringify(twoSum([2,7,11,15],9))",expected:"[0,1]"},{expr:"JSON.stringify(twoSum([3,2,4],6))",expected:"[1,2]"},{expr:"JSON.stringify(twoSum([3,3],6))",expected:"[0,1]"}]},
-  {id:9,name:"Longest Substring",diff:"hard",reward:350,time:300,
-   desc:"Write a function <code>lengthOfLongestSubstring(s)</code> that returns the length of the longest substring without repeating characters.",
-   starter:"function lengthOfLongestSubstring(s) {\n  // your code here\n}",
-   hints:["Use a sliding window approach with two pointers.","Keep a Set of characters currently in the window.","When you find a duplicate, move the left pointer forward until it's gone."],
-   tests:[{expr:"lengthOfLongestSubstring('abcabcbb')",expected:3},{expr:"lengthOfLongestSubstring('bbbbb')",expected:1},{expr:"lengthOfLongestSubstring('pwwkew')",expected:3},{expr:"lengthOfLongestSubstring('')",expected:0}]},
+  {id:0,name:"Sum Two Numbers",diff:"easy",reward:50,time:120,desc:"Write a function <code>sum(a, b)</code> that returns the sum of two numbers.",starter:"function sum(a, b) {\n  // your code here\n}",hints:["Think about the + operator.","Just return a + b.","return a + b;"],tests:[{expr:"sum(1,2)",expected:3},{expr:"sum(-5,5)",expected:0},{expr:"sum(10,20)",expected:30},{expr:"sum(0,0)",expected:0}]},
+  {id:1,name:"Reverse a String",diff:"easy",reward:75,time:120,desc:"Write a function <code>reverseStr(s)</code> that returns the string reversed.",starter:"function reverseStr(s) {\n  // your code here\n}",hints:["Strings have a split method.","Try split(''), reverse(), join('').","return s.split('').reverse().join('');"],tests:[{expr:"reverseStr('hello')",expected:"olleh"},{expr:"reverseStr('abc')",expected:"cba"},{expr:"reverseStr('a')",expected:"a"},{expr:"reverseStr('')",expected:""}]},
+  {id:2,name:"Array Maximum",diff:"easy",reward:75,time:120,desc:"Write a function <code>maxArr(arr)</code> that returns the largest number in the array.",starter:"function maxArr(arr) {\n  // your code here\n}",hints:["Math.max() can take multiple arguments.","Spread the array: Math.max(...arr).","return Math.max(...arr);"],tests:[{expr:"maxArr([1,3,2])",expected:3},{expr:"maxArr([-1,-5,0])",expected:0},{expr:"maxArr([100])",expected:100}]},
+  {id:3,name:"Count Vowels",diff:"easy",reward:80,time:150,desc:"Write a function <code>countVowels(str)</code> that returns the number of vowels (a,e,i,o,u). Case-insensitive.",starter:"function countVowels(str) {\n  // your code here\n}",hints:["Convert to lowercase first.","Use regex: /[aeiou]/gi","return (str.match(/[aeiou]/gi)||[]).length;"],tests:[{expr:"countVowels('hello')",expected:2},{expr:"countVowels('AEIou')",expected:5},{expr:"countVowels('xyz')",expected:0},{expr:"countVowels('')",expected:0}]},
+  {id:4,name:"Palindrome Check",diff:"easy",reward:90,time:150,desc:"Write a function <code>isPalindrome(s)</code> that returns <code>true</code> if the string reads the same forwards and backwards.",starter:"function isPalindrome(s) {\n  // your code here\n}",hints:["Reverse the string and compare to original.","Use split, reverse, join.","return s===s.split('').reverse().join('');"],tests:[{expr:"isPalindrome('racecar')",expected:true},{expr:"isPalindrome('hello')",expected:false},{expr:"isPalindrome('a')",expected:true},{expr:"isPalindrome('')",expected:true}]},
+  {id:5,name:"Is Prime?",diff:"medium",reward:150,time:180,desc:"Write a function <code>isPrime(n)</code> that returns <code>true</code> if n is a prime number.",starter:"function isPrime(n) {\n  // your code here\n}",hints:["Numbers < 2 are not prime.","Loop from 2 to Math.sqrt(n) and check % divisibility.","if(n<2)return false;for(let i=2;i<=Math.sqrt(n);i++)if(n%i===0)return false;return true;"],tests:[{expr:"isPrime(2)",expected:true},{expr:"isPrime(7)",expected:true},{expr:"isPrime(4)",expected:false},{expr:"isPrime(1)",expected:false},{expr:"isPrime(13)",expected:true}]},
+  {id:6,name:"FizzBuzz Array",diff:"medium",reward:150,time:180,desc:"Write a function <code>fizzBuzz(n)</code> that returns an array for 1 to n. Multiples of 3 → 'Fizz', 5 → 'Buzz', both → 'FizzBuzz', else the number as string.",starter:"function fizzBuzz(n) {\n  // your code here\n}",hints:["Use % to check divisibility.","Check FizzBuzz before either alone.","Loop from 1 to n, push to array."],tests:[{expr:"fizzBuzz(3)[2]",expected:"Fizz"},{expr:"fizzBuzz(5)[4]",expected:"Buzz"},{expr:"fizzBuzz(15)[14]",expected:"FizzBuzz"},{expr:"fizzBuzz(5)[0]",expected:"1"}]},
+  {id:7,name:"Flatten Array",diff:"medium",reward:175,time:200,desc:"Write a function <code>flatten(arr)</code> that flattens a deeply nested array into one flat array.",starter:"function flatten(arr) {\n  // your code here\n}",hints:["Arrays have a flat() method.","flat() takes a depth argument.","return arr.flat(Infinity);"],tests:[{expr:"JSON.stringify(flatten([1,[2,3]]))",expected:"[1,2,3]"},{expr:"JSON.stringify(flatten([[1,[2]],3]))",expected:"[1,2,3]"},{expr:"JSON.stringify(flatten([1,2,3]))",expected:"[1,2,3]"}]},
+  {id:8,name:"Two Sum",diff:"hard",reward:300,time:300,desc:"Write a function <code>twoSum(nums, target)</code> that returns indices of two numbers that add up to target. Exactly one solution exists.",starter:"function twoSum(nums, target) {\n  // your code here\n}",hints:["Brute force O(n²) nested loop works.","For O(n) use a Map to store seen values.","For each number check if (target - num) is in the map."],tests:[{expr:"JSON.stringify(twoSum([2,7,11,15],9))",expected:"[0,1]"},{expr:"JSON.stringify(twoSum([3,2,4],6))",expected:"[1,2]"},{expr:"JSON.stringify(twoSum([3,3],6))",expected:"[0,1]"}]},
+  {id:9,name:"Longest Substring",diff:"hard",reward:350,time:300,desc:"Write a function <code>lengthOfLongestSubstring(s)</code> returning the length of the longest substring without repeating characters.",starter:"function lengthOfLongestSubstring(s) {\n  // your code here\n}",hints:["Use a sliding window with two pointers.","Keep a Set of chars in the current window.","Move left pointer forward when a duplicate is found."],tests:[{expr:"lengthOfLongestSubstring('abcabcbb')",expected:3},{expr:"lengthOfLongestSubstring('bbbbb')",expected:1},{expr:"lengthOfLongestSubstring('pwwkew')",expected:3},{expr:"lengthOfLongestSubstring('')",expected:0}]},
+];
+const MILESTONES=[{days:3,icon:"🌱",label:"3-day"},{days:7,icon:"🔥",label:"1 week"},{days:14,icon:"💪",label:"2 weeks"},{days:30,icon:"🏆",label:"1 month"}];
+const FREEZE_COST=75;
+const avatarColors=[{bg:"rgba(79,142,247,0.15)",color:"#4f8ef7"},{bg:"rgba(0,228,154,0.15)",color:"#00e49a"},{bg:"rgba(245,166,35,0.15)",color:"#f5a623"},{bg:"rgba(255,92,92,0.15)",color:"#ff5c5c"},{bg:"rgba(180,100,255,0.15)",color:"#b464ff"}];
+const lbData=[
+  {name:"0xViper",score:1250,solved:8,streak:14,initials:"VX"},
+  {name:"cryptoDev",score:875,solved:5,streak:6,initials:"CD"},
+  {name:"byteKing",score:725,solved:4,streak:0,initials:"BK"},
+  {name:"web3guru",score:500,solved:3,streak:3,initials:"WG"},
+  {name:"solidity_sx",score:375,solved:2,streak:0,initials:"SS"},
+  {name:"nftBuilder",score:150,solved:1,streak:1,initials:"NB"},
+  {name:"You",score:0,solved:0,streak:0,initials:"YO",isYou:true},
 ];
 
-const avatarColors=[
-  {bg:"rgba(79,142,247,0.15)",color:"#4f8ef7"},
-  {bg:"rgba(0,228,154,0.15)",color:"#00e49a"},
-  {bg:"rgba(245,166,35,0.15)",color:"#f5a623"},
-  {bg:"rgba(255,92,92,0.15)",color:"#ff5c5c"},
-  {bg:"rgba(180,100,255,0.15)",color:"#b464ff"},
-];
-
-let balance=0, solved=new Set(), activeId=null, filterDiff="all";
-let timerInterval=null, timerStart=null, bestTimes={};
-let unlockedHints={}, hintsOpen=false;
+let balance=0,solved=new Set(),activeId=null,filterDiff="all";
+let timerInterval=null,timerStart=null,bestTimes={};
+let unlockedHints={},hintsOpen=false;
 const HINT_COST=10;
 
-const lbData=[
-  {name:"0xViper",score:1250,solved:8,initials:"VX"},
-  {name:"cryptoDev",score:875,solved:5,initials:"CD"},
-  {name:"byteKing",score:725,solved:4,initials:"BK"},
-  {name:"web3guru",score:500,solved:3,initials:"WG"},
-  {name:"solidity_sx",score:375,solved:2,initials:"SS"},
-  {name:"nftBuilder",score:150,solved:1,initials:"NB"},
-  {name:"You",score:0,solved:0,initials:"YO",isYou:true},
-];
+function loadStreak(){try{return JSON.parse(localStorage.getItem('vc_streak')||'null');}catch{return null;}}
+function saveStreak(){localStorage.setItem('vc_streak',JSON.stringify(streakState));}
+function defaultStreak(){return{count:0,lastSolve:null,solvedDates:[],freezes:0,simOffset:0};}
+let streakState=loadStreak()||defaultStreak();
 
-function fmtTime(sec){
-  const m=Math.floor(sec/60),s=sec%60;
-  return m>0?`${m}m ${s}s`:`${s}s`;
+function currentSimDate(){
+  const d=new Date();d.setDate(d.getDate()+(streakState.simOffset||0));
+  return d.toISOString().slice(0,10);
+}
+function solvedToday(){return streakState.solvedDates.includes(currentSimDate());}
+function getMultiplier(n){return n>=30?2:n>=14?1.75:n>=7?1.5:1;}
+function multiLabel(n){return n>=30?"2× legendary 🏆":n>=14?"1.75× on fire 🔥🔥":n>=7?"1.5× hot streak 🔥":"1× base";}
+
+function recordSolveToday(){
+  const today=currentSimDate();
+  if(streakState.solvedDates.includes(today))return;
+  streakState.solvedDates.push(today);
+  const last=streakState.lastSolve;
+  if(!last){streakState.count=1;}
+  else{
+    const diff=Math.round((new Date(today)-new Date(last))/86400000);
+    if(diff===1){streakState.count++;}
+    else if(diff===2&&streakState.freezes>0){streakState.freezes--;streakState.count++;}
+    else if(diff>1){streakState.count=1;}
+  }
+  streakState.lastSolve=today;
+  lbData[lbData.length-1].streak=streakState.count;
+  saveStreak();
+  renderStreakUI();
+  renderNavStreak();
+}
+
+function simulateNextDay(){streakState.simOffset=(streakState.simOffset||0)+1;saveStreak();renderStreakUI();updateDateLabel();}
+function simulateMissDay(){
+  streakState.simOffset=(streakState.simOffset||0)+2;
+  const last=streakState.lastSolve;
+  if(last){
+    const today=currentSimDate();
+    const diff=Math.round((new Date(today)-new Date(last))/86400000);
+    if(diff>1&&!(diff===2&&streakState.freezes>0)){streakState.count=0;streakState.lastSolve=null;}
+  }
+  saveStreak();renderStreakUI();updateDateLabel();
+}
+function resetStreak(){streakState=defaultStreak();saveStreak();renderStreakUI();renderNavStreak();updateDateLabel();}
+function updateDateLabel(){const el=document.getElementById("demo-date-label");if(el)el.textContent="Simulated: "+currentSimDate();}
+
+function buyFreeze(){
+  if(balance<FREEZE_COST){alert("Not enough VIB! Solve challenges to earn more.");return;}
+  if(streakState.freezes>=3){alert("Max 3 freezes held at once.");return;}
+  balance-=FREEZE_COST;streakState.freezes++;saveStreak();updateNavStats();renderStreakUI();
+}
+
+function renderNavStreak(){
+  document.getElementById("nav-streak").textContent=streakState.count;
+  document.getElementById("nav-multi").textContent=multiLabel(streakState.count);
+}
+
+function renderStreakUI(){
+  document.getElementById("streak-big").textContent=streakState.count;
+  document.getElementById("streak-multi-badge").textContent=getMultiplier(streakState.count)+"× reward multiplier";
+  const atRisk=!solvedToday()&&streakState.count>0;
+  document.getElementById("at-risk-banner").style.display=atRisk?"flex":"none";
+  renderCalendar();renderMilestones();renderMultiplierTable();renderFreezeSlots();updateDateLabel();
+}
+
+function renderCalendar(){
+  const days=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const today=new Date();today.setDate(today.getDate()+(streakState.simOffset||0));
+  let html="";
+  for(let i=6;i>=0;i--){
+    const d=new Date(today);d.setDate(d.getDate()-i);
+    const ds=d.toISOString().slice(0,10);
+    const isToday=(i===0);
+    const wasSolved=streakState.solvedDates.includes(ds);
+    let cls="cal-dot"+(wasSolved?(isToday?" today-solved":" solved"):(isToday?"":" missed"));
+    const emoji=wasSolved?"🔥":"";
+    html+=`<div class="cal-day"><div class="${cls}">${emoji||"&nbsp;"}</div><div class="cal-label${isToday?" today":""}">${isToday?"today":days[d.getDay()]}</div></div>`;
+  }
+  document.getElementById("cal-grid").innerHTML=html;
+}
+
+function renderMilestones(){
+  const c=streakState.count;
+  document.getElementById("milestone-grid").innerHTML=MILESTONES.map(m=>`
+    <div class="milestone${c>=m.days?" unlocked":""}">
+      <div class="milestone-icon">${m.icon}</div>
+      <div class="milestone-days">${m.days}d</div>
+      <div class="milestone-label">${m.label}</div>
+    </div>`).join("");
+}
+
+function renderMultiplierTable(){
+  const c=streakState.count;
+  const tier=c>=30?3:c>=14?2:c>=7?1:0;
+  for(let i=0;i<=3;i++){const r=document.getElementById("tier-"+i);if(r)r.className=i===tier?"active-tier":"";}
+}
+
+function renderFreezeSlots(){
+  const f=streakState.freezes;
+  document.getElementById("freeze-count").textContent=f+" / 3 owned";
+  let s="";for(let i=0;i<3;i++)s+=`<div class="freeze-slot${i<f?" full":""}">${i<f?"❄️":""}</div>`;
+  document.getElementById("freeze-slots").innerHTML=s;
+  const btn=document.getElementById("freeze-buy-btn");
+  if(btn)btn.disabled=(f>=3);
 }
 
 function diffBadge(d){
-  const map={easy:"diff-easy",medium:"diff-med",hard:"diff-hard"};
-  const label={easy:"Easy",medium:"Medium",hard:"Hard"};
-  return `<span class="diff-badge ${map[d]}">${label[d]}</span>`;
+  const m={easy:"diff-easy",medium:"diff-med",hard:"diff-hard"};
+  const l={easy:"Easy",medium:"Medium",hard:"Hard"};
+  return `<span class="diff-badge ${m[d]}">${l[d]}</span>`;
 }
+function fmtTime(sec){const m=Math.floor(sec/60),s=sec%60;return m>0?`${m}m ${s}s`:`${s}s`;}
 
-function setFilter(diff,btn){
-  filterDiff=diff;
-  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  renderSidebar();
-}
+function setFilter(diff,btn){filterDiff=diff;document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");renderSidebar();}
 
 function renderSidebar(){
   const list=challenges.filter(c=>filterDiff==="all"||c.diff===filterDiff);
   document.getElementById("ch-list").innerHTML=list.map(c=>`
     <div class="ch-item${c.id===activeId?" active":""}${solved.has(c.id)?" done":""}" onclick="selectChallenge(${c.id})">
-      <div class="ch-row1">
-        <span class="ch-name">${c.name}${solved.has(c.id)?'<span class="done-check">✓</span>':""}</span>
-        ${diffBadge(c.diff)}
-      </div>
-      <div class="ch-row2">
-        <span class="ch-reward">+${c.reward} VIB</span>
-        ${bestTimes[c.id]?`<span class="ch-best">⏱ ${fmtTime(bestTimes[c.id])}</span>`:""}
-      </div>
-    </div>
-  `).join("");
+      <div class="ch-row1"><span class="ch-name">${c.name}${solved.has(c.id)?'<span class="done-check"> ✓</span>':""}</span>${diffBadge(c.diff)}</div>
+      <div class="ch-row2"><span class="ch-reward">+${c.reward} VIB</span>${bestTimes[c.id]?`<span class="ch-best">⏱ ${fmtTime(bestTimes[c.id])}</span>`:""}</div>
+    </div>`).join("");
 }
 
-function startTimer(){
-  stopTimer();
-  timerStart=Date.now();
-  timerInterval=setInterval(updateTimer,500);
-  updateTimer();
-}
-
-function stopTimer(){
-  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
-}
-
+function startTimer(){stopTimer();timerStart=Date.now();timerInterval=setInterval(updateTimer,500);updateTimer();}
+function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
 function updateTimer(){
   if(activeId===null)return;
   const elapsed=Math.floor((Date.now()-timerStart)/1000);
-  const limit=challenges[activeId].time;
-  const remaining=Math.max(0,limit-elapsed);
-  const el=document.getElementById("timer-display");
-  if(!el)return;
+  const limit=challenges[activeId].time,remaining=Math.max(0,limit-elapsed);
+  const el=document.getElementById("timer-display");if(!el)return;
   el.textContent="⏱ "+fmtTime(remaining);
   el.className="timer-display"+(remaining<=0?" danger":remaining<=limit*0.3?" warn":" running");
 }
 
 function renderHints(){
-  const c=challenges[activeId];
-  const unlocked=unlockedHints[activeId]||0;
+  const c=challenges[activeId],unlocked=unlockedHints[activeId]||0;
   document.getElementById("hints-count").textContent=`(${unlocked}/${c.hints.length} unlocked)`;
-  document.getElementById("hints-chevron").className="hints-chevron"+(hintsOpen?" open":"");
   const body=document.getElementById("hints-body");
   body.className="hints-body"+(hintsOpen?" open":"");
   body.innerHTML=c.hints.map((h,i)=>{
-    if(i<unlocked){
-      return `<div class="hint-row"><div class="hint-num">${i+1}</div><span class="hint-text">${h}</span></div>`;
-    }
-    return `<div class="hint-row">
-      <div class="hint-num">${i+1}</div>
-      <div class="hint-locked">
-        <span class="hint-locked-text">Locked</span>
-        <button class="unlock-btn" onclick="unlockHint(${i})">Unlock — 10 VIB</button>
-      </div>
-    </div>`;
+    if(i<unlocked)return`<div class="hint-row"><div class="hint-num">${i+1}</div><span class="hint-text">${h}</span></div>`;
+    return`<div class="hint-row"><div class="hint-num">${i+1}</div><div class="hint-locked"><span class="hint-locked-text">Locked</span><button class="unlock-btn" onclick="unlockHint(${i})">Unlock — 10 VIB</button></div></div>`;
   }).join("");
 }
-
-function toggleHints(){
-  hintsOpen=!hintsOpen;
-  renderHints();
-}
-
+function toggleHints(){hintsOpen=!hintsOpen;renderHints();}
 function unlockHint(i){
-  const cur=unlockedHints[activeId]||0;
-  if(i!==cur)return;
-  if(balance<HINT_COST){
-    alert("Not enough VIB! Solve a challenge first to earn VIB.");
-    return;
-  }
-  balance-=HINT_COST;
-  unlockedHints[activeId]=(cur+1);
-  updateNavStats();
-  renderHints();
+  const cur=unlockedHints[activeId]||0;if(i!==cur)return;
+  if(balance<HINT_COST){alert("Not enough VIB!");return;}
+  balance-=HINT_COST;unlockedHints[activeId]=(cur+1);updateNavStats();renderHints();
 }
 
 function selectChallenge(id){
-  activeId=id;
-  hintsOpen=false;
+  activeId=id;hintsOpen=false;
   const c=challenges[id];
   document.getElementById("ch-placeholder").style.display="none";
   document.getElementById("ch-content").style.display="block";
   document.getElementById("ci-title").textContent=c.name;
   document.getElementById("ci-desc").innerHTML=c.desc;
+  const multi=getMultiplier(streakState.count),boosted=Math.round(c.reward*multi);
   document.getElementById("ci-meta").innerHTML=`
     ${diffBadge(c.diff)}
-    <span class="meta-pill"><b>Reward:</b> ${c.reward} VIB</span>
-    <span class="meta-pill"><b>Time limit:</b> ${fmtTime(c.time)}</span>
-    <span class="meta-pill"><b>Test cases:</b> ${c.tests.length}</span>
-  `;
-  if(!solved.has(id)) document.getElementById("code-input").value=c.starter;
+    <span class="meta-pill"><b>Base:</b> ${c.reward} VIB</span>
+    ${multi>1?`<span class="multiplier-pill">🔥 ${multi}× streak = ${boosted} VIB</span>`:""}
+    <span class="meta-pill"><b>Time:</b> ${fmtTime(c.time)}</span>
+    <span class="meta-pill"><b>Tests:</b> ${c.tests.length}</span>`;
+  if(!solved.has(id))document.getElementById("code-input").value=c.starter;
   document.getElementById("results-area").innerHTML="";
-  renderHints();
-  startTimer();
-  renderSidebar();
+  renderHints();startTimer();renderSidebar();
 }
 
-function resetCode(){
-  if(activeId===null)return;
-  document.getElementById("code-input").value=challenges[activeId].starter;
-  document.getElementById("results-area").innerHTML="";
-  startTimer();
-}
+function resetCode(){if(activeId===null)return;document.getElementById("code-input").value=challenges[activeId].starter;document.getElementById("results-area").innerHTML="";startTimer();}
 
 function handleTab(e){
-  if(e.key==="Tab"){
-    e.preventDefault();
-    const t=e.target, s=t.selectionStart, en=t.selectionEnd;
-    t.value=t.value.substring(0,s)+"  "+t.value.substring(en);
-    t.selectionStart=t.selectionEnd=s+2;
-  }
+  if(e.key==="Tab"){e.preventDefault();const t=e.target,s=t.selectionStart,en=t.selectionEnd;t.value=t.value.substring(0,s)+"  "+t.value.substring(en);t.selectionStart=t.selectionEnd=s+2;}
 }
 
 function runCode(){
-  const c=challenges[activeId];
-  const code=document.getElementById("code-input").value;
+  const c=challenges[activeId],code=document.getElementById("code-input").value;
   const elapsed=timerStart?Math.floor((Date.now()-timerStart)/1000):0;
-  let passCount=0, rows="";
+  let passCount=0,rows="";
   for(const t of c.tests){
     try{
-      const fn=new Function(code+"\nreturn ("+t.expr+");");
-      const result=fn();
+      const fn=new Function(code+"\nreturn ("+t.expr+");"),result=fn();
       const pass=JSON.stringify(result)===JSON.stringify(t.expected);
       if(pass)passCount++;
-      rows+=`<div class="test-row">
-        <div class="test-dot ${pass?"dot-pass":"dot-fail"}"></div>
-        <span class="test-expr">${t.expr}</span>
-        <span class="test-result ${pass?"pass":"fail"}">${pass?"Passed":"Got: "+JSON.stringify(result)}</span>
-      </div>`;
-    }catch(e){
-      rows+=`<div class="test-row">
-        <div class="test-dot dot-fail"></div>
-        <span class="test-expr">${t.expr}</span>
-        <span class="test-result fail">Error: ${e.message}</span>
-      </div>`;
-    }
+      rows+=`<div class="test-row"><div class="test-dot ${pass?"dot-pass":"dot-fail"}"></div><span class="test-expr">${t.expr}</span><span class="test-result ${pass?"pass":"fail"}">${pass?"Passed":"Got: "+JSON.stringify(result)}</span></div>`;
+    }catch(e){rows+=`<div class="test-row"><div class="test-dot dot-fail"></div><span class="test-expr">${t.expr}</span><span class="test-result fail">Error: ${e.message}</span></div>`;}
   }
   const allPass=passCount===c.tests.length;
-  let html=`<div class="results-card" style="margin-bottom:12px;">
-    <div class="results-head">${passCount}/${c.tests.length} tests passing</div>
-    ${rows}
-  </div>`;
-  if(allPass && !solved.has(activeId)){
-    stopTimer();
-    solved.add(activeId);
-    bestTimes[activeId]=elapsed;
-    balance+=c.reward;
-    updateNavStats();
+  let html=`<div class="results-card"><div class="results-head">${passCount}/${c.tests.length} tests passing</div>${rows}</div>`;
+  if(allPass&&!solved.has(activeId)){
+    stopTimer();solved.add(activeId);bestTimes[activeId]=elapsed;
+    const multi=getMultiplier(streakState.count),base=c.reward,bonus=Math.round(base*multi)-base,total=base+bonus;
+    balance+=total;recordSolveToday();updateNavStats();
     html+=`<div class="reward-card">
-      <span class="reward-icon">🪙</span>
-      <div>
-        <div class="reward-title">+${c.reward} VIB Earned! Challenge solved in ${fmtTime(elapsed)}</div>
-        <div class="reward-sub">New balance: ${balance} VIB · Keep going to climb the leaderboard</div>
+      <div class="reward-main">+${total} VIB earned! Solved in ${fmtTime(elapsed)}</div>
+      <div class="reward-breakdown">
+        <span class="reward-item">Base: +${base} VIB</span>
+        ${bonus>0?`<span class="reward-item bonus">🔥 ${multi}× streak bonus: +${bonus} VIB</span>`:""}
+        <span class="reward-item">Streak: ${streakState.count} days 🔥</span>
       </div>
+      <div class="reward-sub">New balance: ${balance} VIB · Keep your streak alive for bigger rewards!</div>
     </div>`;
-    renderSidebar();
-    renderLeaderboard();
-  } else if(allPass){
-    html+=`<div class="reward-card"><div><div class="reward-title">Already solved — no double rewards!</div></div></div>`;
-  }
+    renderSidebar();renderLeaderboard();
+    selectChallenge(activeId);
+  }else if(allPass){html+=`<div class="reward-card"><div class="reward-main">Already solved!</div><div class="reward-sub">No double rewards, but your code is correct.</div></div>`;}
   document.getElementById("results-area").innerHTML=html;
 }
 
 function updateNavStats(){
   document.getElementById("nav-bal").textContent=balance;
   document.getElementById("nav-solved").textContent=solved.size+" / 10";
+  lbData[lbData.length-1].score=balance;lbData[lbData.length-1].solved=solved.size;
   const sorted=[...lbData].sort((a,b)=>b.score-a.score);
-  lbData[lbData.length-1].score=balance;
-  lbData[lbData.length-1].solved=solved.size;
-  const sorted2=[...lbData].sort((a,b)=>b.score-a.score);
-  document.getElementById("nav-rank").textContent="#"+(sorted2.findIndex(x=>x.isYou)+1);
+  document.getElementById("nav-rank").textContent="#"+(sorted.findIndex(x=>x.isYou)+1);
+  renderNavStreak();
 }
 
 function renderLeaderboard(){
-  const sorted=[...lbData].sort((a,b)=>b.score-a.score);
-  const medals=["🥇","🥈","🥉"];
+  const sorted=[...lbData].sort((a,b)=>b.score-a.score),medals=["🥇","🥈","🥉"];
   document.getElementById("lb-rows").innerHTML=sorted.map((p,i)=>{
     const ac=avatarColors[i%avatarColors.length];
-    return `<div class="lb-row${p.isYou?" you-row":""}">
+    return`<div class="lb-row${p.isYou?" you-row":""}">
       <div class="lb-rank">${medals[i]||i+1}</div>
       <div class="lb-avatar" style="background:${ac.bg};color:${ac.color};">${p.initials}</div>
-      <div class="lb-info">
-        <div class="lb-name${p.isYou?" you":""}">${p.name}${p.isYou?" (you)":""}</div>
-        <div class="lb-solved-text">${p.solved} challenges solved</div>
-      </div>
-      <div class="lb-score">${p.score} VIB</div>
+      <div class="lb-info"><div class="lb-name${p.isYou?" you":""}">${p.name}${p.isYou?" (you)":""}</div><div class="lb-solved-text">${p.solved} solved</div></div>
+      <div class="lb-right"><div class="lb-score">${p.score} VIB</div><div class="lb-streak${p.streak>=7?" hot":""}">${p.streak>0?"🔥 "+p.streak+"d":""}</div></div>
     </div>`;
   }).join("");
 }
 
 function switchTab(tab,btn){
-  document.querySelectorAll(".main-tab").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  document.getElementById("tab-editor").style.display=tab==="editor"?"block":"none";
-  document.getElementById("tab-leaderboard").style.display=tab==="leaderboard"?"block":"none";
+  document.querySelectorAll(".main-tab").forEach(b=>b.classList.remove("active"));btn.classList.add("active");
+  ["editor","streak","leaderboard"].forEach(t=>document.getElementById("tab-"+t).style.display=t===tab?"block":"none");
+  if(tab==="streak")renderStreakUI();
 }
+function openStreakTab(){switchTab("streak",document.getElementById("tab-btn-streak"));}
 
-renderSidebar();
-renderLeaderboard();
+renderSidebar();renderLeaderboard();renderNavStreak();updateDateLabel();
+if(streakState.count>0&&!solvedToday())document.getElementById("at-risk-banner").style.display="flex";
 </script>
 </body>
 </html>
