@@ -1,204 +1,446 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>vibecrypto.dev</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪙</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-.app{font-family:var(--font-sans);display:flex;flex-direction:column;gap:10px;padding:.75rem 0;}
-.header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);}
-.logo{font-family:var(--font-mono);font-size:15px;font-weight:500;color:var(--color-text-primary);}
-.logo span{color:#1D9E75;}
-.wallet{display:flex;align-items:center;gap:8px;}
-.bal-val{font-size:16px;font-weight:500;color:#1D9E75;font-family:var(--font-mono);}
-.bal-tick{font-size:11px;color:var(--color-text-secondary);}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.stat-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:9px 12px;}
-.stat-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:3px;}
-.stat-val{font-size:18px;font-weight:500;color:var(--color-text-primary);font-family:var(--font-mono);}
-.stat-val.green{color:#1D9E75;}
-.stat-val.amber{color:#BA7517;}
-.main{display:grid;grid-template-columns:230px 1fr;gap:10px;min-height:540px;}
-.sidebar{display:flex;flex-direction:column;gap:5px;overflow-y:auto;max-height:580px;}
-.sidebar-title{font-size:10px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:1px;padding:0 2px;margin-bottom:3px;}
-.ch-item{padding:9px 11px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);cursor:pointer;transition:border-color .15s;}
-.ch-item:hover{border-color:var(--color-border-secondary);}
-.ch-item.active{border-color:#1D9E75;background:var(--color-background-secondary);}
-.ch-item.done .ch-name{opacity:.7;}
-.done-badge{font-size:10px;color:#1D9E75;margin-left:4px;}
-.ch-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;}
-.ch-name{font-size:12px;font-weight:500;color:var(--color-text-primary);}
-.ch-reward{font-size:11px;font-family:var(--font-mono);color:#1D9E75;}
-.ch-diff{font-size:10px;padding:2px 5px;border-radius:4px;font-weight:500;}
-.diff-easy{background:#EAF3DE;color:#3B6D11;}
-.diff-med{background:#FAEEDA;color:#854F0B;}
-.diff-hard{background:#FAECE7;color:#993C1D;}
-.panel{display:flex;flex-direction:column;gap:10px;}
-.tabs{display:flex;gap:4px;border-bottom:0.5px solid var(--color-border-tertiary);}
-.tab-btn{padding:6px 12px;font-size:12px;color:var(--color-text-secondary);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
-.tab-btn.active{color:#1D9E75;border-bottom-color:#1D9E75;font-weight:500;}
-.tab-content{display:none;flex-direction:column;gap:10px;}
-.tab-content.show{display:flex;}
-.challenge-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:11px 13px;}
-.ch-title-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
-.ch-title{font-size:13px;font-weight:500;color:var(--color-text-primary);}
-.timer-pill{font-family:var(--font-mono);font-size:12px;padding:3px 9px;border-radius:99px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);}
-.timer-pill.running{color:#1D9E75;border-color:#9FE1CB;}
-.timer-pill.warn{color:#BA7517;border-color:#FAC775;}
-.timer-pill.danger{color:#A32D2D;border-color:#F7C1C1;}
-.ch-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.6;}
-.ch-meta{display:flex;gap:10px;margin-top:7px;flex-wrap:wrap;}
-.ch-meta span{font-size:10px;color:var(--color-text-tertiary);}
-.ch-meta b{color:var(--color-text-secondary);}
-.hint-section{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);overflow:hidden;}
-.hint-header{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;cursor:pointer;}
-.hint-header-left{font-size:12px;font-weight:500;color:var(--color-text-secondary);}
-.hint-cost{font-size:10px;color:#BA7517;font-family:var(--font-mono);}
-.hint-body{padding:0 12px;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;}
-.hint-body.open{max-height:200px;padding:0 12px 10px;}
-.hint-item{padding:6px 0;border-top:0.5px solid var(--color-border-tertiary);font-size:12px;color:var(--color-text-secondary);line-height:1.5;display:flex;gap:8px;align-items:flex-start;}
-.hint-num{font-family:var(--font-mono);font-size:10px;color:#BA7517;margin-top:2px;flex-shrink:0;}
-.hint-unlock-btn{font-size:11px;padding:3px 9px;border:0.5px solid #FAC775;background:#FAEEDA;color:#854F0B;border-radius:4px;cursor:pointer;}
-.hint-unlock-btn:hover{background:#FAC775;}
-.editor-label{font-size:10px;color:var(--color-text-secondary);font-family:var(--font-mono);}
-.code-editor{width:100%;min-height:160px;padding:11px;font-family:var(--font-mono);font-size:12px;line-height:1.6;background:var(--color-background-primary);color:var(--color-text-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);resize:vertical;outline:none;tab-size:2;}
-.code-editor:focus{border-color:#1D9E75;}
-.btn-row{display:flex;gap:8px;align-items:center;}
-.run-btn{padding:8px 18px;background:#1D9E75;color:#fff;border:none;border-radius:var(--border-radius-md);font-size:12px;font-weight:500;cursor:pointer;transition:opacity .15s;}
+:root{
+  --bg:#0d0f14;
+  --bg2:#13161e;
+  --bg3:#1a1e29;
+  --bg4:#222638;
+  --border:#2a2f45;
+  --border2:#363d5a;
+  --text:#e8ecf4;
+  --text2:#8b92aa;
+  --text3:#555d75;
+  --green:#00e49a;
+  --green2:#00b87a;
+  --green-bg:rgba(0,228,154,0.08);
+  --green-border:rgba(0,228,154,0.2);
+  --amber:#f5a623;
+  --amber-bg:rgba(245,166,35,0.08);
+  --amber-border:rgba(245,166,35,0.2);
+  --red:#ff5c5c;
+  --red-bg:rgba(255,92,92,0.08);
+  --red-border:rgba(255,92,92,0.2);
+  --blue:#4f8ef7;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Syne',sans-serif;
+  --radius:8px;
+  --radius-lg:12px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);}
+
+/* NAV */
+.nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;height:56px;
+  background:rgba(13,15,20,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{font-family:var(--mono);font-size:16px;font-weight:600;letter-spacing:-0.5px;}
+.nav-logo span{color:var(--green);}
+.nav-right{display:flex;align-items:center;gap:24px;}
+.nav-stat{display:flex;flex-direction:column;align-items:flex-end;}
+.nav-stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;}
+.nav-stat-val{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--green);}
+.nav-divider{width:1px;height:28px;background:var(--border);}
+.balance-pill{display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:99px;}
+.balance-pill .amount{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--green);}
+.balance-pill .ticker{font-size:11px;color:var(--text2);}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:280px 1fr;height:calc(100vh - 56px);overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  background:var(--bg2);
+  overflow:hidden;
+}
+.sidebar-head{
+  padding:16px 20px 12px;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.sidebar-head h2{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:10px;}
+.filter-row{display:flex;gap:4px;}
+.filter-btn{
+  padding:4px 12px;font-size:11px;font-family:var(--sans);font-weight:500;
+  border:1px solid var(--border);border-radius:99px;
+  background:none;color:var(--text2);cursor:pointer;transition:all .15s;
+}
+.filter-btn:hover{border-color:var(--border2);color:var(--text);}
+.filter-btn.active{background:var(--green);border-color:var(--green);color:#0d0f14;}
+.ch-list{flex:1;overflow-y:auto;padding:8px;}
+.ch-list::-webkit-scrollbar{width:4px;}
+.ch-list::-webkit-scrollbar-track{background:transparent;}
+.ch-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.ch-item{
+  padding:11px 13px;border-radius:var(--radius);
+  cursor:pointer;transition:background .12s;
+  border:1px solid transparent;
+  margin-bottom:3px;
+}
+.ch-item:hover{background:var(--bg3);}
+.ch-item.active{background:var(--bg3);border-color:var(--green-border);}
+.ch-item.done{opacity:.7;}
+.ch-row1{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.ch-name{font-size:13px;font-weight:500;color:var(--text);}
+.done-check{color:var(--green);font-size:11px;margin-left:5px;}
+.diff-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;font-family:var(--mono);}
+.diff-easy{background:rgba(0,228,154,0.1);color:var(--green);}
+.diff-med{background:var(--amber-bg);color:var(--amber);}
+.diff-hard{background:var(--red-bg);color:var(--red);}
+.ch-row2{display:flex;justify-content:space-between;align-items:center;}
+.ch-reward{font-family:var(--mono);font-size:11px;color:var(--green);font-weight:500;}
+.ch-best{font-family:var(--mono);font-size:10px;color:var(--text3);}
+
+/* MAIN PANEL */
+.main{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
+.main-tabs{
+  display:flex;align-items:center;gap:0;
+  border-bottom:1px solid var(--border);
+  background:var(--bg2);
+  padding:0 24px;
+  flex-shrink:0;
+}
+.main-tab{
+  padding:14px 18px;font-size:13px;font-weight:500;
+  color:var(--text2);background:none;border:none;cursor:pointer;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:color .15s;font-family:var(--sans);
+}
+.main-tab:hover{color:var(--text);}
+.main-tab.active{color:var(--green);border-bottom-color:var(--green);}
+.main-body{flex:1;overflow-y:auto;padding:24px;}
+.main-body::-webkit-scrollbar{width:4px;}
+.main-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+/* EMPTY STATE */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:var(--text3);}
+.empty-icon{font-size:40px;opacity:.4;}
+.empty p{font-size:14px;}
+
+/* CHALLENGE INFO */
+.ch-info-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;
+}
+.ch-info-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.ch-info-title{font-size:18px;font-weight:700;color:var(--text);}
+.timer-display{
+  font-family:var(--mono);font-size:14px;font-weight:600;
+  padding:6px 14px;border-radius:99px;
+  border:1px solid var(--border2);color:var(--text2);
+  transition:all .3s;white-space:nowrap;
+}
+.timer-display.running{color:var(--green);border-color:var(--green-border);background:var(--green-bg);}
+.timer-display.warn{color:var(--amber);border-color:var(--amber-border);background:var(--amber-bg);}
+.timer-display.danger{color:var(--red);border-color:var(--red-border);background:var(--red-bg);}
+.ch-info-desc{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:14px;}
+.ch-info-desc code{font-family:var(--mono);font-size:12px;background:var(--bg4);padding:1px 5px;border-radius:4px;color:var(--green);}
+.ch-meta-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-pill{font-size:11px;padding:4px 10px;border-radius:6px;background:var(--bg4);color:var(--text2);border:1px solid var(--border);}
+.meta-pill b{color:var(--text);}
+
+/* HINTS */
+.hints-card{
+  background:var(--bg2);border:1px solid var(--amber-border);
+  border-radius:var(--radius-lg);margin-bottom:16px;overflow:hidden;
+}
+.hints-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 16px;cursor:pointer;user-select:none;
+}
+.hints-header:hover{background:var(--bg3);}
+.hints-header-left{display:flex;align-items:center;gap:8px;}
+.hints-icon{font-size:14px;}
+.hints-title{font-size:13px;font-weight:600;color:var(--amber);}
+.hints-count{font-size:11px;color:var(--text3);font-family:var(--mono);}
+.hints-cost-note{font-size:11px;color:var(--text3);}
+.hints-chevron{font-size:12px;color:var(--text3);transition:transform .2s;}
+.hints-chevron.open{transform:rotate(180deg);}
+.hints-body{border-top:1px solid var(--border);display:none;}
+.hints-body.open{display:block;}
+.hint-row{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 16px;border-bottom:1px solid var(--border);
+}
+.hint-row:last-child{border-bottom:none;}
+.hint-num{
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  width:20px;height:20px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);
+  flex-shrink:0;
+}
+.hint-text{font-size:13px;color:var(--text2);line-height:1.5;flex:1;}
+.hint-locked{display:flex;align-items:center;gap:8px;flex:1;}
+.hint-locked-text{font-size:12px;color:var(--text3);}
+.unlock-btn{
+  font-size:11px;font-weight:600;padding:4px 12px;
+  background:var(--amber-bg);border:1px solid var(--amber-border);
+  color:var(--amber);border-radius:6px;cursor:pointer;
+  font-family:var(--sans);transition:all .15s;
+}
+.unlock-btn:hover{background:rgba(245,166,35,0.18);}
+
+/* EDITOR */
+.editor-section{margin-bottom:16px;}
+.editor-label{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:8px;padding-left:2px;}
+.code-editor{
+  width:100%;min-height:180px;padding:14px 16px;
+  font-family:var(--mono);font-size:13px;line-height:1.7;
+  background:var(--bg2);color:var(--text);
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  resize:vertical;outline:none;tab-size:2;
+  transition:border-color .15s;
+}
+.code-editor:focus{border-color:var(--green-border);}
+.btn-row{display:flex;gap:10px;align-items:center;}
+.run-btn{
+  padding:10px 24px;background:var(--green);color:#0d0f14;
+  border:none;border-radius:var(--radius);font-size:13px;font-weight:700;
+  cursor:pointer;font-family:var(--sans);transition:opacity .15s;
+}
 .run-btn:hover{opacity:.85;}
-.reset-btn{padding:8px 14px;background:none;color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;}
-.reset-btn:hover{border-color:var(--color-border-secondary);}
-.results-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 13px;}
-.results-title{font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:7px;}
-.test-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.reset-btn{
+  padding:10px 16px;background:none;color:var(--text2);
+  border:1px solid var(--border);border-radius:var(--radius);
+  font-size:13px;cursor:pointer;font-family:var(--sans);transition:all .15s;
+}
+.reset-btn:hover{border-color:var(--border2);color:var(--text);}
+
+/* RESULTS */
+.results-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+.results-head{padding:11px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text2);}
+.test-row{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid var(--border);}
 .test-row:last-child{border-bottom:none;}
-.test-icon{width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;}
-.pass-icon{background:#EAF3DE;color:#3B6D11;}
-.fail-icon{background:#FCEBEB;color:#A32D2D;}
-.test-expr{font-family:var(--font-mono);font-size:11px;color:var(--color-text-secondary);flex:1;}
-.test-status{font-size:10px;color:var(--color-text-tertiary);}
-.reward-banner{background:#EAF3DE;border:0.5px solid #C0DD97;border-radius:var(--border-radius-md);padding:9px 13px;display:flex;align-items:center;gap:10px;}
-.reward-text{font-size:12px;color:#3B6D11;font-weight:500;}
-.reward-sub{font-size:11px;color:#639922;}
-.placeholder{font-size:13px;color:var(--color-text-tertiary);padding:12px 0;}
-.lb-row{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.test-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-pass{background:var(--green);}
+.dot-fail{background:var(--red);}
+.test-expr{font-family:var(--mono);font-size:12px;color:var(--text2);flex:1;}
+.test-result{font-size:11px;color:var(--text3);}
+.test-result.pass{color:var(--green);}
+.test-result.fail{color:var(--red);}
+
+/* REWARD */
+.reward-card{
+  background:var(--green-bg);border:1px solid var(--green-border);
+  border-radius:var(--radius-lg);padding:16px 20px;
+  display:flex;align-items:center;gap:14px;
+}
+.reward-icon{font-size:28px;}
+.reward-title{font-size:14px;font-weight:700;color:var(--green);margin-bottom:3px;}
+.reward-sub{font-size:12px;color:var(--text2);}
+
+/* LEADERBOARD */
+.lb-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+.lb-head{padding:14px 20px;border-bottom:1px solid var(--border);}
+.lb-head h2{font-size:13px;font-weight:700;color:var(--text);}
+.lb-head p{font-size:12px;color:var(--text3);margin-top:2px;}
+.lb-row{display:flex;align-items:center;gap:12px;padding:11px 20px;border-bottom:1px solid var(--border);transition:background .12s;}
 .lb-row:last-child{border-bottom:none;}
-.lb-rank{font-size:12px;font-weight:500;color:var(--color-text-secondary);width:22px;text-align:center;}
-.lb-avatar{width:26px;height:26px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:#185FA5;}
-.lb-name{font-size:12px;color:var(--color-text-primary);flex:1;}
-.lb-name.you{font-weight:500;color:#1D9E75;}
-.lb-score{font-family:var(--font-mono);font-size:12px;color:#1D9E75;font-weight:500;}
-.lb-solved{font-size:10px;color:var(--color-text-tertiary);}
-.filter-row{display:flex;gap:5px;flex-wrap:wrap;}
-.filter-btn{padding:4px 10px;font-size:11px;border:0.5px solid var(--color-border-tertiary);border-radius:99px;background:none;color:var(--color-text-secondary);cursor:pointer;}
-.filter-btn.active-filter{background:#1D9E75;color:#fff;border-color:#1D9E75;}
-.section-label{font-size:10px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:1px;}
+.lb-row:hover{background:var(--bg3);}
+.lb-row.you-row{background:var(--green-bg);}
+.lb-rank{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--text3);width:24px;text-align:center;}
+.lb-avatar{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;flex-shrink:0;
+}
+.lb-info{flex:1;}
+.lb-name{font-size:13px;font-weight:500;color:var(--text);}
+.lb-name.you{color:var(--green);}
+.lb-solved-text{font-size:11px;color:var(--text3);margin-top:1px;}
+.lb-score{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--green);}
+
+/* PLACEHOLDER */
+.placeholder-txt{font-size:13px;color:var(--text3);padding:8px 0;}
+
+/* SCROLLBAR GLOBAL */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
 </style>
+</head>
+<body>
 
-<div class="app">
-<div class="header">
-  <div class="logo">vibe<span>crypto</span>.dev</div>
-  <div class="wallet">
-    <span style="font-size:12px;color:var(--color-text-secondary);">Balance</span>
-    <span class="bal-val" id="bal">0</span>
-    <span class="bal-tick">VIB</span>
-  </div>
-</div>
-
-<div class="stats-row">
-  <div class="stat-card"><div class="stat-label">Earned</div><div class="stat-val green" id="stat-earned">0 VIB</div></div>
-  <div class="stat-card"><div class="stat-label">Solved</div><div class="stat-val" id="stat-solved">0 / 10</div></div>
-  <div class="stat-card"><div class="stat-label">Rank</div><div class="stat-val" id="stat-rank">#7</div></div>
-  <div class="stat-card"><div class="stat-label">Best time</div><div class="stat-val amber" id="stat-time">—</div></div>
-</div>
-
-<div class="main">
-  <div class="sidebar">
-    <div class="sidebar-title">Challenges</div>
-    <div class="filter-row" style="margin-bottom:4px;">
-      <button class="filter-btn active-filter" onclick="setFilter('all',this)">All</button>
-      <button class="filter-btn" onclick="setFilter('easy',this)">Easy</button>
-      <button class="filter-btn" onclick="setFilter('medium',this)">Medium</button>
-      <button class="filter-btn" onclick="setFilter('hard',this)">Hard</button>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">vibe<span>crypto</span>.dev</div>
+  <div class="nav-right">
+    <div class="nav-stat">
+      <span class="nav-stat-label">Solved</span>
+      <span class="nav-stat-val" id="nav-solved">0 / 10</span>
     </div>
-    <div id="challenge-list"></div>
-  </div>
-
-  <div class="panel">
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('editor')">Editor</button>
-      <button class="tab-btn" onclick="switchTab('leaderboard')">Leaderboard</button>
+    <div class="nav-divider"></div>
+    <div class="nav-stat">
+      <span class="nav-stat-label">Rank</span>
+      <span class="nav-stat-val" id="nav-rank">#7</span>
     </div>
+    <div class="nav-divider"></div>
+    <div class="balance-pill">
+      <span class="amount" id="nav-bal">0</span>
+      <span class="ticker">VIB</span>
+    </div>
+  </div>
+</nav>
 
-    <div class="tab-content show" id="tab-editor">
-      <div id="ch-info"><p class="placeholder">← Select a challenge to begin</p></div>
-      <div id="editor-section" style="display:none;flex-direction:column;gap:9px;">
-        <div class="hint-section" id="hint-section"></div>
-        <div class="editor-label">// your solution</div>
-        <textarea class="code-editor" id="code-input" spellcheck="false"></textarea>
-        <div class="btn-row">
-          <button class="run-btn" onclick="runCode()">Run & Submit</button>
-          <button class="reset-btn" onclick="resetCode()">Reset</button>
-        </div>
-        <div id="results-area"></div>
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <h2>Challenges</h2>
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+        <button class="filter-btn" onclick="setFilter('easy',this)">Easy</button>
+        <button class="filter-btn" onclick="setFilter('medium',this)">Medium</button>
+        <button class="filter-btn" onclick="setFilter('hard',this)">Hard</button>
       </div>
     </div>
+    <div class="ch-list" id="ch-list"></div>
+  </aside>
 
-    <div class="tab-content" id="tab-leaderboard">
-      <div id="leaderboard-list"></div>
+  <!-- MAIN -->
+  <div class="main">
+    <div class="main-tabs">
+      <button class="main-tab active" onclick="switchTab('editor',this)">Editor</button>
+      <button class="main-tab" onclick="switchTab('leaderboard',this)">Leaderboard</button>
+    </div>
+
+    <div class="main-body">
+
+      <!-- EDITOR TAB -->
+      <div id="tab-editor">
+        <div id="ch-placeholder" class="empty">
+          <div class="empty-icon">⚡</div>
+          <p>Select a challenge from the sidebar to start coding</p>
+        </div>
+        <div id="ch-content" style="display:none;">
+          <!-- challenge info -->
+          <div class="ch-info-card">
+            <div class="ch-info-top">
+              <span class="ch-info-title" id="ci-title"></span>
+              <span class="timer-display" id="timer-display">—</span>
+            </div>
+            <p class="ch-info-desc" id="ci-desc"></p>
+            <div class="ch-meta-pills" id="ci-meta"></div>
+          </div>
+          <!-- hints -->
+          <div class="hints-card">
+            <div class="hints-header" onclick="toggleHints()">
+              <div class="hints-header-left">
+                <span class="hints-icon">💡</span>
+                <span class="hints-title">Hints</span>
+                <span class="hints-count" id="hints-count">(0/3 unlocked)</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span class="hints-cost-note">10 VIB each</span>
+                <span class="hints-chevron" id="hints-chevron">▼</span>
+              </div>
+            </div>
+            <div class="hints-body" id="hints-body"></div>
+          </div>
+          <!-- editor -->
+          <div class="editor-section">
+            <div class="editor-label">// your solution</div>
+            <textarea class="code-editor" id="code-input" spellcheck="false" onkeydown="handleTab(event)"></textarea>
+          </div>
+          <div class="btn-row" style="margin-bottom:16px;">
+            <button class="run-btn" onclick="runCode()">▶ Run & Submit</button>
+            <button class="reset-btn" onclick="resetCode()">↺ Reset</button>
+          </div>
+          <div id="results-area"></div>
+        </div>
+      </div>
+
+      <!-- LEADERBOARD TAB -->
+      <div id="tab-leaderboard" style="display:none;">
+        <div class="lb-card">
+          <div class="lb-head">
+            <h2>Global Leaderboard</h2>
+            <p>Ranked by VIB earned</p>
+          </div>
+          <div id="lb-rows"></div>
+        </div>
+      </div>
+
     </div>
   </div>
-</div>
 </div>
 
 <script>
-const challenges = [
+const challenges=[
   {id:0,name:"Sum Two Numbers",diff:"easy",reward:50,time:120,
    desc:"Write a function <code>sum(a, b)</code> that returns the sum of two numbers.",
-   starter:"function sum(a, b) {\n  \n}",
-   hints:["Think about what the + operator does.","Just return a + b.","return a + b;"],
+   starter:"function sum(a, b) {\n  // your code here\n}",
+   hints:["Think about what the + operator does.","Just use the + operator to combine a and b.","return a + b;"],
    tests:[{expr:"sum(1,2)",expected:3},{expr:"sum(-5,5)",expected:0},{expr:"sum(10,20)",expected:30},{expr:"sum(0,0)",expected:0}]},
   {id:1,name:"Reverse a String",diff:"easy",reward:75,time:120,
    desc:"Write a function <code>reverseStr(s)</code> that returns the string reversed.",
-   starter:"function reverseStr(s) {\n  \n}",
-   hints:["Strings have a split method.","Try split(''), reverse(), join('').","return s.split('').reverse().join('');"],
+   starter:"function reverseStr(s) {\n  // your code here\n}",
+   hints:["Strings have a split method.","Try split(''), reverse(), then join('').","return s.split('').reverse().join('');"],
    tests:[{expr:"reverseStr('hello')",expected:"olleh"},{expr:"reverseStr('abc')",expected:"cba"},{expr:"reverseStr('a')",expected:"a"},{expr:"reverseStr('')",expected:""}]},
   {id:2,name:"Array Maximum",diff:"easy",reward:75,time:120,
    desc:"Write a function <code>maxArr(arr)</code> that returns the largest number in the array.",
-   starter:"function maxArr(arr) {\n  \n}",
-   hints:["Math.max() can accept multiple arguments.","Spread the array: Math.max(...arr).","return Math.max(...arr);"],
+   starter:"function maxArr(arr) {\n  // your code here\n}",
+   hints:["Math.max() can take multiple arguments.","You can spread the array: Math.max(...arr).","return Math.max(...arr);"],
    tests:[{expr:"maxArr([1,3,2])",expected:3},{expr:"maxArr([-1,-5,0])",expected:0},{expr:"maxArr([100])",expected:100}]},
   {id:3,name:"Count Vowels",diff:"easy",reward:80,time:150,
-   desc:"Write a function <code>countVowels(str)</code> that returns the number of vowels (a,e,i,o,u) in a string (case-insensitive).",
-   starter:"function countVowels(str) {\n  \n}",
-   hints:["Convert to lowercase first.","Use a regex match: /[aeiou]/gi","return (str.match(/[aeiou]/gi)||[]).length;"],
+   desc:"Write a function <code>countVowels(str)</code> that returns the number of vowels (a,e,i,o,u) in a string. Case-insensitive.",
+   starter:"function countVowels(str) {\n  // your code here\n}",
+   hints:["Convert to lowercase first with .toLowerCase().","Use a regex match: /[aeiou]/gi","return (str.match(/[aeiou]/gi) || []).length;"],
    tests:[{expr:"countVowels('hello')",expected:2},{expr:"countVowels('AEIou')",expected:5},{expr:"countVowels('xyz')",expected:0},{expr:"countVowels('')",expected:0}]},
   {id:4,name:"Palindrome Check",diff:"easy",reward:90,time:150,
    desc:"Write a function <code>isPalindrome(s)</code> that returns <code>true</code> if the string reads the same forwards and backwards.",
-   starter:"function isPalindrome(s) {\n  \n}",
-   hints:["Reverse the string and compare.","Use split/reverse/join to reverse.","return s === s.split('').reverse().join('');"],
+   starter:"function isPalindrome(s) {\n  // your code here\n}",
+   hints:["Reverse the string and compare it to the original.","Use split, reverse, and join to reverse.","return s === s.split('').reverse().join('');"],
    tests:[{expr:"isPalindrome('racecar')",expected:true},{expr:"isPalindrome('hello')",expected:false},{expr:"isPalindrome('a')",expected:true},{expr:"isPalindrome('')",expected:true}]},
   {id:5,name:"Is Prime?",diff:"medium",reward:150,time:180,
-   desc:"Write a function <code>isPrime(n)</code> that returns <code>true</code> if n is prime.",
-   starter:"function isPrime(n) {\n  \n}",
-   hints:["Numbers less than 2 are not prime.","Loop from 2 to Math.sqrt(n) and check divisibility.","if(n<2) return false; for(let i=2;i<=Math.sqrt(n);i++) if(n%i===0) return false; return true;"],
+   desc:"Write a function <code>isPrime(n)</code> that returns <code>true</code> if n is a prime number, <code>false</code> otherwise.",
+   starter:"function isPrime(n) {\n  // your code here\n}",
+   hints:["Numbers less than 2 are not prime.","Loop from 2 to Math.sqrt(n) and check divisibility with %.","if(n<2) return false; for(let i=2;i<=Math.sqrt(n);i++) if(n%i===0) return false; return true;"],
    tests:[{expr:"isPrime(2)",expected:true},{expr:"isPrime(7)",expected:true},{expr:"isPrime(4)",expected:false},{expr:"isPrime(1)",expected:false},{expr:"isPrime(13)",expected:true}]},
   {id:6,name:"FizzBuzz Array",diff:"medium",reward:150,time:180,
-   desc:"Write a function <code>fizzBuzz(n)</code> that returns an array for 1 to n. Multiples of 3 → 'Fizz', 5 → 'Buzz', both → 'FizzBuzz', else the number as string.",
-   starter:"function fizzBuzz(n) {\n  \n}",
-   hints:["Use the modulo operator % to check divisibility.","Check for FizzBuzz (both) before checking either alone.","Build an array with a loop from 1 to n."],
+   desc:"Write a function <code>fizzBuzz(n)</code> that returns an array for 1 to n. Multiples of 3 → 'Fizz', 5 → 'Buzz', both → 'FizzBuzz', else the number as a string.",
+   starter:"function fizzBuzz(n) {\n  // your code here\n}",
+   hints:["Use the % (modulo) operator to check divisibility.","Check for FizzBuzz (divisible by both) before checking either alone.","Loop from 1 to n and push to a result array."],
    tests:[{expr:"fizzBuzz(3)[2]",expected:"Fizz"},{expr:"fizzBuzz(5)[4]",expected:"Buzz"},{expr:"fizzBuzz(15)[14]",expected:"FizzBuzz"},{expr:"fizzBuzz(5)[0]",expected:"1"}]},
   {id:7,name:"Flatten Array",diff:"medium",reward:175,time:200,
-   desc:"Write a function <code>flatten(arr)</code> that takes a nested array and returns a single flat array.",
-   starter:"function flatten(arr) {\n  \n}",
-   hints:["Arrays have a flat() method.","flat() takes a depth argument — use Infinity.","return arr.flat(Infinity);"],
+   desc:"Write a function <code>flatten(arr)</code> that takes a deeply nested array and returns a single flat array with all values.",
+   starter:"function flatten(arr) {\n  // your code here\n}",
+   hints:["JavaScript arrays have a built-in flat() method.","flat() accepts a depth argument.","Use Infinity as the depth to flatten any nesting level."],
    tests:[{expr:"JSON.stringify(flatten([1,[2,3]]))",expected:"[1,2,3]"},{expr:"JSON.stringify(flatten([[1,[2]],3]))",expected:"[1,2,3]"},{expr:"JSON.stringify(flatten([1,2,3]))",expected:"[1,2,3]"}]},
   {id:8,name:"Two Sum",diff:"hard",reward:300,time:300,
-   desc:"Write a function <code>twoSum(nums, target)</code> that returns indices of two numbers that add up to target. Assume exactly one solution exists.",
-   starter:"function twoSum(nums, target) {\n  \n}",
-   hints:["A brute force O(n²) nested loop works.","For O(n), use a Map to store seen values.","For each num, check if (target - num) is already in the map."],
+   desc:"Write a function <code>twoSum(nums, target)</code> that returns the indices of the two numbers that add up to <code>target</code>. Assume exactly one solution exists.",
+   starter:"function twoSum(nums, target) {\n  // your code here\n}",
+   hints:["A brute force O(n²) nested loop works fine here.","For O(n), use a Map to store numbers you've already seen.","For each number, check if (target - num) already exists in the map."],
    tests:[{expr:"JSON.stringify(twoSum([2,7,11,15],9))",expected:"[0,1]"},{expr:"JSON.stringify(twoSum([3,2,4],6))",expected:"[1,2]"},{expr:"JSON.stringify(twoSum([3,3],6))",expected:"[0,1]"}]},
   {id:9,name:"Longest Substring",diff:"hard",reward:350,time:300,
    desc:"Write a function <code>lengthOfLongestSubstring(s)</code> that returns the length of the longest substring without repeating characters.",
-   starter:"function lengthOfLongestSubstring(s) {\n  \n}",
-   hints:["Use a sliding window approach.","Keep a Set of characters in the current window.","Move left pointer forward when a duplicate is found."],
+   starter:"function lengthOfLongestSubstring(s) {\n  // your code here\n}",
+   hints:["Use a sliding window approach with two pointers.","Keep a Set of characters currently in the window.","When you find a duplicate, move the left pointer forward until it's gone."],
    tests:[{expr:"lengthOfLongestSubstring('abcabcbb')",expected:3},{expr:"lengthOfLongestSubstring('bbbbb')",expected:1},{expr:"lengthOfLongestSubstring('pwwkew')",expected:3},{expr:"lengthOfLongestSubstring('')",expected:0}]},
+];
+
+const avatarColors=[
+  {bg:"rgba(79,142,247,0.15)",color:"#4f8ef7"},
+  {bg:"rgba(0,228,154,0.15)",color:"#00e49a"},
+  {bg:"rgba(245,166,35,0.15)",color:"#f5a623"},
+  {bg:"rgba(255,92,92,0.15)",color:"#ff5c5c"},
+  {bg:"rgba(180,100,255,0.15)",color:"#b464ff"},
 ];
 
 let balance=0, solved=new Set(), activeId=null, filterDiff="all";
@@ -216,35 +458,35 @@ const lbData=[
   {name:"You",score:0,solved:0,initials:"YO",isYou:true},
 ];
 
-function diffLabel(d){
-  if(d==="easy") return '<span class="ch-diff diff-easy">Easy</span>';
-  if(d==="medium") return '<span class="ch-diff diff-med">Med</span>';
-  return '<span class="ch-diff diff-hard">Hard</span>';
-}
-
 function fmtTime(sec){
-  const m=Math.floor(sec/60), s=sec%60;
+  const m=Math.floor(sec/60),s=sec%60;
   return m>0?`${m}m ${s}s`:`${s}s`;
 }
 
-function setFilter(diff, btn){
+function diffBadge(d){
+  const map={easy:"diff-easy",medium:"diff-med",hard:"diff-hard"};
+  const label={easy:"Easy",medium:"Medium",hard:"Hard"};
+  return `<span class="diff-badge ${map[d]}">${label[d]}</span>`;
+}
+
+function setFilter(diff,btn){
   filterDiff=diff;
-  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active-filter"));
-  btn.classList.add("active-filter");
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
   renderSidebar();
 }
 
 function renderSidebar(){
   const list=challenges.filter(c=>filterDiff==="all"||c.diff===filterDiff);
-  document.getElementById("challenge-list").innerHTML=list.map(c=>`
+  document.getElementById("ch-list").innerHTML=list.map(c=>`
     <div class="ch-item${c.id===activeId?" active":""}${solved.has(c.id)?" done":""}" onclick="selectChallenge(${c.id})">
-      <div class="ch-top">
-        <span class="ch-name">${c.name}${solved.has(c.id)?'<span class="done-badge">✓</span>':""}</span>
-        ${diffLabel(c.diff)}
+      <div class="ch-row1">
+        <span class="ch-name">${c.name}${solved.has(c.id)?'<span class="done-check">✓</span>':""}</span>
+        ${diffBadge(c.diff)}
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="ch-row2">
         <span class="ch-reward">+${c.reward} VIB</span>
-        ${bestTimes[c.id]?`<span style="font-size:10px;color:var(--color-text-tertiary);">${fmtTime(bestTimes[c.id])}</span>`:""}
+        ${bestTimes[c.id]?`<span class="ch-best">⏱ ${fmtTime(bestTimes[c.id])}</span>`:""}
       </div>
     </div>
   `).join("");
@@ -254,6 +496,7 @@ function startTimer(){
   stopTimer();
   timerStart=Date.now();
   timerInterval=setInterval(updateTimer,500);
+  updateTimer();
 }
 
 function stopTimer(){
@@ -261,32 +504,35 @@ function stopTimer(){
 }
 
 function updateTimer(){
-  if(activeId===null) return;
+  if(activeId===null)return;
   const elapsed=Math.floor((Date.now()-timerStart)/1000);
   const limit=challenges[activeId].time;
   const remaining=Math.max(0,limit-elapsed);
-  const pill=document.getElementById("timer-display");
-  if(!pill) return;
-  pill.textContent=fmtTime(remaining);
-  pill.className="timer-pill"+(remaining<=0?" danger":remaining<=limit*0.3?" warn":" running");
+  const el=document.getElementById("timer-display");
+  if(!el)return;
+  el.textContent="⏱ "+fmtTime(remaining);
+  el.className="timer-display"+(remaining<=0?" danger":remaining<=limit*0.3?" warn":" running");
 }
 
 function renderHints(){
   const c=challenges[activeId];
   const unlocked=unlockedHints[activeId]||0;
-  const hintItems=c.hints.map((h,i)=>{
+  document.getElementById("hints-count").textContent=`(${unlocked}/${c.hints.length} unlocked)`;
+  document.getElementById("hints-chevron").className="hints-chevron"+(hintsOpen?" open":"");
+  const body=document.getElementById("hints-body");
+  body.className="hints-body"+(hintsOpen?" open":"");
+  body.innerHTML=c.hints.map((h,i)=>{
     if(i<unlocked){
-      return `<div class="hint-item"><span class="hint-num">${i+1}</span><span>${h}</span></div>`;
+      return `<div class="hint-row"><div class="hint-num">${i+1}</div><span class="hint-text">${h}</span></div>`;
     }
-    return `<div class="hint-item"><span class="hint-num">${i+1}</span><button class="hint-unlock-btn" onclick="unlockHint(${i})">Unlock (-${HINT_COST} VIB)</button></div>`;
+    return `<div class="hint-row">
+      <div class="hint-num">${i+1}</div>
+      <div class="hint-locked">
+        <span class="hint-locked-text">Locked</span>
+        <button class="unlock-btn" onclick="unlockHint(${i})">Unlock — 10 VIB</button>
+      </div>
+    </div>`;
   }).join("");
-  document.getElementById("hint-section").innerHTML=`
-    <div class="hint-header" onclick="toggleHints()">
-      <span class="hint-header-left">Hints (${unlocked}/${c.hints.length} unlocked)</span>
-      <span class="hint-cost">${HINT_COST} VIB each</span>
-    </div>
-    <div class="hint-body${hintsOpen?" open":""}" id="hint-body">${hintItems}</div>
-  `;
 }
 
 function toggleHints(){
@@ -295,16 +541,15 @@ function toggleHints(){
 }
 
 function unlockHint(i){
+  const cur=unlockedHints[activeId]||0;
+  if(i!==cur)return;
   if(balance<HINT_COST){
-    alert("Not enough VIB! Earn more by solving challenges.");
+    alert("Not enough VIB! Solve a challenge first to earn VIB.");
     return;
   }
-  const cur=unlockedHints[activeId]||0;
-  if(i!==cur){return;}
   balance-=HINT_COST;
   unlockedHints[activeId]=(cur+1);
-  document.getElementById("bal").textContent=balance;
-  document.getElementById("stat-earned").textContent=balance+" VIB";
+  updateNavStats();
   renderHints();
 }
 
@@ -312,23 +557,16 @@ function selectChallenge(id){
   activeId=id;
   hintsOpen=false;
   const c=challenges[id];
-  document.getElementById("ch-info").innerHTML=`
-    <div class="challenge-box">
-      <div class="ch-title-row">
-        <span class="ch-title">${c.name}</span>
-        <span class="timer-pill running" id="timer-display">${fmtTime(c.time)}</span>
-      </div>
-      <div class="ch-desc">${c.desc}</div>
-      <div class="ch-meta">
-        ${diffLabel(c.diff)}
-        <span><b>Reward:</b> ${c.reward} VIB</span>
-        <span><b>Time limit:</b> ${fmtTime(c.time)}</span>
-        <span><b>Tests:</b> ${c.tests.length}</span>
-      </div>
-    </div>
+  document.getElementById("ch-placeholder").style.display="none";
+  document.getElementById("ch-content").style.display="block";
+  document.getElementById("ci-title").textContent=c.name;
+  document.getElementById("ci-desc").innerHTML=c.desc;
+  document.getElementById("ci-meta").innerHTML=`
+    ${diffBadge(c.diff)}
+    <span class="meta-pill"><b>Reward:</b> ${c.reward} VIB</span>
+    <span class="meta-pill"><b>Time limit:</b> ${fmtTime(c.time)}</span>
+    <span class="meta-pill"><b>Test cases:</b> ${c.tests.length}</span>
   `;
-  const edSec=document.getElementById("editor-section");
-  edSec.style.display="flex";
   if(!solved.has(id)) document.getElementById("code-input").value=c.starter;
   document.getElementById("results-area").innerHTML="";
   renderHints();
@@ -337,92 +575,107 @@ function selectChallenge(id){
 }
 
 function resetCode(){
-  if(activeId===null) return;
+  if(activeId===null)return;
   document.getElementById("code-input").value=challenges[activeId].starter;
   document.getElementById("results-area").innerHTML="";
   startTimer();
+}
+
+function handleTab(e){
+  if(e.key==="Tab"){
+    e.preventDefault();
+    const t=e.target, s=t.selectionStart, en=t.selectionEnd;
+    t.value=t.value.substring(0,s)+"  "+t.value.substring(en);
+    t.selectionStart=t.selectionEnd=s+2;
+  }
 }
 
 function runCode(){
   const c=challenges[activeId];
   const code=document.getElementById("code-input").value;
   const elapsed=timerStart?Math.floor((Date.now()-timerStart)/1000):0;
-  const area=document.getElementById("results-area");
   let passCount=0, rows="";
   for(const t of c.tests){
     try{
       const fn=new Function(code+"\nreturn ("+t.expr+");");
       const result=fn();
       const pass=JSON.stringify(result)===JSON.stringify(t.expected);
-      if(pass) passCount++;
+      if(pass)passCount++;
       rows+=`<div class="test-row">
-        <div class="test-icon ${pass?"pass-icon":"fail-icon"}">${pass?"✓":"✗"}</div>
+        <div class="test-dot ${pass?"dot-pass":"dot-fail"}"></div>
         <span class="test-expr">${t.expr}</span>
-        <span class="test-status">${pass?"passed":"got: "+JSON.stringify(result)}</span>
+        <span class="test-result ${pass?"pass":"fail"}">${pass?"Passed":"Got: "+JSON.stringify(result)}</span>
       </div>`;
-    } catch(e){
+    }catch(e){
       rows+=`<div class="test-row">
-        <div class="test-icon fail-icon">✗</div>
+        <div class="test-dot dot-fail"></div>
         <span class="test-expr">${t.expr}</span>
-        <span class="test-status" style="color:#A32D2D;">Error: ${e.message}</span>
+        <span class="test-result fail">Error: ${e.message}</span>
       </div>`;
     }
   }
   const allPass=passCount===c.tests.length;
-  let html=`<div class="results-box"><div class="results-title">${passCount}/${c.tests.length} tests passing</div>${rows}</div>`;
+  let html=`<div class="results-card" style="margin-bottom:12px;">
+    <div class="results-head">${passCount}/${c.tests.length} tests passing</div>
+    ${rows}
+  </div>`;
   if(allPass && !solved.has(activeId)){
     stopTimer();
     solved.add(activeId);
     bestTimes[activeId]=elapsed;
-    const hintPenalty=(unlockedHints[activeId]||0)*HINT_COST;
-    const earned=c.reward;
-    balance+=earned;
-    const allBest=Object.values(bestTimes);
-    const minTime=allBest.length?Math.min(...allBest):null;
-    updateStats(minTime);
-    html+=`<div class="reward-banner">
+    balance+=c.reward;
+    updateNavStats();
+    html+=`<div class="reward-card">
+      <span class="reward-icon">🪙</span>
       <div>
-        <div class="reward-text">Challenge solved in ${fmtTime(elapsed)}! +${earned} VIB earned</div>
-        <div class="reward-sub">New balance: ${balance} VIB${hintPenalty>0?" ("+hintPenalty+" VIB spent on hints)":""}</div>
+        <div class="reward-title">+${c.reward} VIB Earned! Challenge solved in ${fmtTime(elapsed)}</div>
+        <div class="reward-sub">New balance: ${balance} VIB · Keep going to climb the leaderboard</div>
       </div>
     </div>`;
     renderSidebar();
+    renderLeaderboard();
   } else if(allPass){
-    html+=`<div class="reward-banner"><div><div class="reward-text">Already solved — no double rewards!</div></div></div>`;
+    html+=`<div class="reward-card"><div><div class="reward-title">Already solved — no double rewards!</div></div></div>`;
   }
-  area.innerHTML=html;
+  document.getElementById("results-area").innerHTML=html;
 }
 
-function updateStats(bestTime){
-  document.getElementById("bal").textContent=balance;
-  document.getElementById("stat-earned").textContent=balance+" VIB";
-  document.getElementById("stat-solved").textContent=solved.size+" / 10";
-  if(bestTime!=null) document.getElementById("stat-time").textContent=fmtTime(bestTime);
+function updateNavStats(){
+  document.getElementById("nav-bal").textContent=balance;
+  document.getElementById("nav-solved").textContent=solved.size+" / 10";
+  const sorted=[...lbData].sort((a,b)=>b.score-a.score);
   lbData[lbData.length-1].score=balance;
   lbData[lbData.length-1].solved=solved.size;
-  const sorted=[...lbData].sort((a,b)=>b.score-a.score);
-  const rank=sorted.findIndex(x=>x.isYou)+1;
-  document.getElementById("stat-rank").textContent="#"+rank;
-  renderLeaderboard();
+  const sorted2=[...lbData].sort((a,b)=>b.score-a.score);
+  document.getElementById("nav-rank").textContent="#"+(sorted2.findIndex(x=>x.isYou)+1);
 }
 
 function renderLeaderboard(){
   const sorted=[...lbData].sort((a,b)=>b.score-a.score);
   const medals=["🥇","🥈","🥉"];
-  document.getElementById("leaderboard-list").innerHTML=`
-    <div class="section-label" style="margin-bottom:8px;">Top solvers</div>
-    ${sorted.map((p,i)=>`
-      <div class="lb-row">
-        <div class="lb-rank">${medals[i]||i+1}</div>
-        <div class="lb-avatar">${p.initials}</div>
+  document.getElementById("lb-rows").innerHTML=sorted.map((p,i)=>{
+    const ac=avatarColors[i%avatarColors.length];
+    return `<div class="lb-row${p.isYou?" you-row":""}">
+      <div class="lb-rank">${medals[i]||i+1}</div>
+      <div class="lb-avatar" style="background:${ac.bg};color:${ac.color};">${p.initials}</div>
+      <div class="lb-info">
         <div class="lb-name${p.isYou?" you":""}">${p.name}${p.isYou?" (you)":""}</div>
-        <div class="lb-solved">${p.solved} solved</div>
-        <div class="lb-score">${p.score} VIB</div>
+        <div class="lb-solved-text">${p.solved} challenges solved</div>
       </div>
-    `).join("")}
-  `;
+      <div class="lb-score">${p.score} VIB</div>
+    </div>`;
+  }).join("");
+}
+
+function switchTab(tab,btn){
+  document.querySelectorAll(".main-tab").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById("tab-editor").style.display=tab==="editor"?"block":"none";
+  document.getElementById("tab-leaderboard").style.display=tab==="leaderboard"?"block":"none";
 }
 
 renderSidebar();
 renderLeaderboard();
 </script>
+</body>
+</html>
